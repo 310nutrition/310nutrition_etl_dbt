@@ -1,0 +1,120 @@
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: "edm_data_transformation"
+version: "1.0.0"
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: "edm_data_transformation"
+
+vars:
+  # raw_database: "EDM"
+  # raw_schema: "EDM"
+  raw_database: "edm-saras"
+  raw_schema: "EDM_Daton"
+  mdl_database: "edm-saras"
+  mdl_schema: "edm_mdl_prerequisites"
+
+  # Set the models to False in case you dont want them to be materialised
+
+  # In case the product details sheet for COGs is in scope, the following flag needs to be turned on
+  product_details_gs_flag : False
+
+  # In case the monthly sales target sheet for COGs is in scope, the following flag needs to be turned on
+  sales_target_gs_flag : False
+
+  currency_conversion_flag: True
+  get_brandname_from_tablename_flag: False
+  # if get_brandname_from_tablename_flag = True, position of brand name in the daton integration name
+  brandname_position_in_tablename: 0
+  # if get_brandname_from_tablename_flag = False, provide the brand name to be populated in the table
+  default_brandname: "Default"
+
+  get_storename_from_tablename_flag: True    
+  # if get_storename_from_tablename_flag = True, position of store name in the daton integration name
+  storename_position_in_tablename: 1
+  # if get_storename_from_tablename_flag = False, provide the store name to be populated in the table
+  default_storename: "US"
+
+  # Set this flag to true if recharge is in the scope
+  recharge_flag: False
+
+  # Set this flag to true if upscribe is in the scope
+  upscribe_flag: False
+
+  # Set this flag to true if google analytics 4 is in the scope
+  ga_flag: False
+
+  # Google Analytics 4 Account Platform Name Position
+  platform_name_position: 2
+
+  timezone_conversion_flag: False
+  #timezone_conversion_hours: "-7"
+
+  # Variables used for dbt-tests
+  'dbt_date:time_zone': 'America/Los_Angeles'
+
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+docs-paths: ["docs"]
+
+target-path: "target" # directory which will store compiled SQL files
+clean-targets: # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In this example config, we tell dbt to build all models in the example/ directory
+# as tables. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+
+models:
+  edm_data_transformation:
+    # Config indicated by + and applies to all files under models/example/
+    Staging:
+      AmazonDSP:
+        +schema: stg_amazon_dsp
+      GoogleSheets:
+        +schema: stg_googlesheets
+      FlipkartAds:
+        +schema: stg_flipkart_ads
+      TiktokAds:
+        +schema: stg_tiktok_ads
+      FlipkartSellerHub:
+        +schema: stg_flipkart_sellerhub
+      Klaviyo:
+        +schema: stg_klaviyo
+      PinterestAds:
+        +schema: stg_pinterestads
+      WalmartMarketplace:
+        +schema: stg_walmart_marketplace
+      WalmartAds:
+        +schema: stg_walmart_ads
+      WalmartRetail:
+        +schema: stg_walmart_retail
+      TargetPlus:
+        +schema: stg_targetplus
+      Easypost:
+        +schema: stg_easypost
+      MyntraSeller:
+        +schema: stg_myntra_seller
+      MyntraAds:
+        +schema: stg_myntra_ads
+    Modelling:
+      Prerequisites:
+        +schema: mdl_prerequisites
+      Main:
+        +schema: mdl_main
+    Presentation:
+      +schema: presentation

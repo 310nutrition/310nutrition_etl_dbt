@@ -1,0 +1,8 @@
+dbt_packages/
+logs/
+target/
+profiles/
+profiles
+logs/
+Keyfile.json
+keyfile.json

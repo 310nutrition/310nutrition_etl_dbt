@@ -1,0 +1,480 @@
+version: 2
+models:
+
+# Modelling
+
+  - name: dim_address_amazonseller
+    columns:
+      - name: email
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: address_type
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: addr_line_1
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: full_name
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: addr_line_2
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: city
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: state
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: country
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: postal_code
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: phone
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+
+  - name: dim_brand_amazonseller
+    columns:
+      - name: brand_name
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+
+  - name: dim_customer_amazonseller
+    columns:
+      - name: email
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+
+  - name: dim_orders_amazonseller
+    columns:
+      - name: order_id
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: platform_name
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+
+
+  - name: dim_platform_amazonseller
+    columns:
+      - name: platform_name
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: store_name
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+
+  - name: dim_shipment_amazonseller
+    columns:
+      - name: order_id
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: platform_name
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: product_id
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: sku
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+      - name: fulfillment_center_id
+        tests:
+          - unique:
+              config:
+                severity: error
+          - not_null:
+              config:
+                severity: error
+
+
+  - name: fact_finances_amazonseller
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - platform_name
+            - brand
+            - store_name
+            - product_id
+            - sku
+            - date
+            - amount_type
+            - transaction_type
+            - charge_type
+
+      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
+          expression: sum(amount)
+          compare_model: ref("ListFinancialEventsOrderRevenue")
+          compare_expression: sum(cast(CurrencyAmount as numeric))
+          row_condition: amount is not null  and amount_type = 'Revenue' and transaction_type = 'Order' 
+          compare_row_condition: CurrencyAmount is not null
+          
+    columns:
+      
+      - name: date
+        tests:
+          - not_null:
+              config:
+                severity: error
+
+      - name: brand
+        tests:
+          - relationships:
+              to: ref('dim_brand')
+              field: brand_name
+              
+      - name: order_id
+        tests:
+          - relationships:
+              to: ref('dim_orders')
+              field: order_id
+
+      - name: platform_name
+        tests:
+          - relationships:
+              to: ref('dim_orders')
+              field: platform_name
+              
+      - name: platform_name
+        tests:
+          - relationships:
+              to: ref('dim_platform')
+              field: platform_name
+
+      - name: store_name
+        tests:
+          - relationships:
+              to: ref('dim_platform')
+              field: store_name
+              
+      - name: product_id
+        tests:
+          - relationships:
+              to: ref('dim_shipment')
+              field: product_id
+
+      - name: sku
+        tests:
+          - relationships:
+              to: ref('dim_shipment')
+              field: sku
+
+      - name: platform_name
+        tests:
+          - relationships:
+              to: ref('dim_shipment')
+              field: platform_name
+
+  - name: fact_order_lines_amazonseller
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date
+            - brand
+            - email
+            - product_id
+            - sku
+            - platform_name
+            - store_name
+            - order_id
+            - subscription_id
+            - is_cancelled
+            - transaction_type
+            - reason
+
+      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
+          expression: sum(quantity)
+          compare_model: ref("FlatFileAllOrdersReportByLastUpdate")
+          compare_expression: sum(quantity)
+          row_condition: quantity is not null  and transaction_type = 'Order'
+          compare_row_condition: quantity is not null and sales_channel <> 'Non-Amazon'
+         
+    columns:
+      
+      - name: date
+        tests:
+          - not_null:
+              config:
+                severity: error
+
+      - name: brand
+        tests:
+          - relationships:
+              to: ref('dim_brand')
+              field: brand_name
+                
+      - name: platform_name
+        tests:
+          - relationships:
+              to: ref('dim_platform')
+              field: platform_name
+      
+      - name: store_name
+        tests:
+          - relationships:
+              to: ref('dim_platform')
+              field: store_name
+
+  - name: fact_orders_amazonseller
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date
+            - brand
+            - email
+            - platform_name
+            - store_name
+            - order_id
+            - is_cancelled
+            - transaction_type
+
+      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
+          expression: sum(quantity)
+          compare_model: ref("FlatFileAllOrdersReportByLastUpdate")
+          compare_expression: sum(quantity)
+          row_condition: quantity is not null  and transaction_type = 'Order'
+          compare_row_condition: quantity is not null and sales_channel <> 'Non-Amazon' and item_status != 'Cancelled'
+         
+    columns:
+      
+      - name: date
+        tests:
+          - not_null:
+              config:
+                severity: error
+
+      - name: brand
+        tests:
+          - relationships:
+              to: ref('dim_brand')
+              field: brand_name
+          
+      - name: store_name
+        tests:
+          - relationships:
+              to: ref('dim_platform')
+              field: order_key
+           
+      - name: store_name
+        tests:
+          - relationships:
+              to: ref('dim_platform')
+              field: platform_name
+
+  
+  - name: fact_traffic_amazonseller
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date
+            - product_id
+            - sku
+            - platform_name
+            - brand
+            - store_name
+            - source
+            - medium
+            - campaign
+            - content
+            - keyword
+            - event_name
+            - landing_page_path
+
+      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
+          expression: sum(mobile_Sessions)
+          compare_model: ref("SalesAndTrafficReportByChildASIN")
+          compare_expression: sum(mobileAppSessions)
+          row_condition: mobile_Sessions is not null and platform_key in (select platform_key from {{ ref('dim_platform') }} where platform_name = 'Amazon')
+          compare_row_condition: mobileAppSessions is not null
+          
+    columns:
+      
+      - name: date
+        tests:
+          - not_null:
+              config:
+                severity: error
+
+      - name: brand
+        tests:
+          - relationships:
+              to: ref('dim_brand')
+              field: brand_name
+              
+      - name: platform_name
+        tests:
+          - relationships:
+              to: ref('dim_platform')
+              field: platform_name
+
+      - name: store_name
+        tests:
+          - relationships:
+              to: ref('dim_platform')
+              field: store_name
+            
+      - name: product_id
+        tests:
+          - relationships:
+              to: ref('dim_shipment')
+              field: product_id
+
+      - name: sku
+        tests:
+          - relationships:
+              to: ref('dim_shipment')
+              field: sku
+      
+      - name: platform_name
+        tests:
+          - relationships:
+              to: ref('dim_shipment')
+              field: platform_name
+             
+      - name: event_name
+        tests:
+          - relationships:
+              to: ref('dim_event')
+              field: event_name
+
+      - name: landing_page_path
+        tests:
+          - relationships:
+              to: ref('dim_event')
+              field: landing_page_path
+           
+      - name: source
+        tests:
+          - relationships:
+              to: ref('dim_utm_channel')
+              field: source
+
+      - name: medium
+        tests:
+          - relationships:
+              to: ref('dim_utm_channel')
+              field: medium
+
+      - name: campaign
+        tests:
+          - relationships:
+              to: ref('dim_utm_channel')
+              field: campaign
+
+      - name: keyword
+        tests:
+          - relationships:
+              to: ref('dim_utm_channel')
+              field: keyword
+
+      - name: content
+        tests:
+          - relationships:
+              to: ref('dim_utm_channel')
+              field: content
+     
+     

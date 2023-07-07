@@ -1,0 +1,186 @@
+version: 2
+models:
+
+  - name: KlaviyoCampaigns
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      
+      
+      
+  - name: KlaviyoBouncedEmail
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'datetime', 'data_type': 'timestamp'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoClickedEmail
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoClickedSMS
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoConsentedToReceiveSMS
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoDroppedEmail
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoFailedToDeliverSMS
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campagin_Name']
+
+  - name: KlaviyoFlowActions
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'updated_date', 'data_type': 'date'}
+
+  - name: KlaviyoFlowMessages
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'updated_date', 'data_type': 'date'}
+
+  - name: KlaviyoFlows
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'updated_date', 'data_type': 'date'}
+
+  - name: KlaviyoLists
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'updated_date', 'data_type': 'date'}
+
+  - name: KlaviyoMarkedEmailAsSpam
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoMetrics
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'updated_date', 'data_type': 'date'}
+      cluster_by : ['type']
+
+  - name: KlaviyoOpenedEmail
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoOpenedPush
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoPlacedOrder
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id','_attributed_event_id']
+      partition_by: { 'field': 'datetime', 'data_type': 'timestamp', 'granularity': 'day' }
+
+  - name: KlaviyoRecievedPush
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoReceivedSMS
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoReceivedEmail
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']
+
+  - name: KlaviyoSegments
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'created_time', 'data_type': 'timestamp', 'granularity': 'day'}
+
+  - name: KlaviyoSentSMS
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+
+  - name: KlaviyoSubscribedToList
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+
+  - name: KlaviyoUnsubscribedFromList
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['attributed_msg']
+
+  - name: KlaviyoUnsubscribed
+    config:
+      materialized : incremental
+      incremental_strategy: merge
+      unique_key : ['id']
+      partition_by : { 'field': 'date', 'data_type': 'date'}
+      cluster_by : ['Campaign_Name']      
