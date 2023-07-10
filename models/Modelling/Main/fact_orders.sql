@@ -36,7 +36,7 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
         {{ dbt_utils.surrogate_key(['order_id','platform_name']) }} AS order_key,
         {{ dbt_utils.surrogate_key(['platform_name','store_name']) }} AS platform_key,
         {{ dbt_utils.surrogate_key(['brand']) }} AS brand_key,
-        {{ dbt_utils.surrogate_key(['email']) }} AS customer_key,
+        {{ dbt_utils.surrogate_key(['customer_id']) }} AS customer_key,
         date,
         transaction_type,
         quantity,

@@ -30,25 +30,22 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
 {% endif %}
 
 {% for i in results_list %}
-
-        select * {{exclude()}} (row_num) from (
-        select {{ dbt_utils.surrogate_key(['platform_name','store_name']) }} AS platform_key, 
-        coalesce(platform_name,'') platform_name,
-        type,
-        store_name,
-        description,
-        status,
-        {{from_epoch_milliseconds()}} as effective_start_date,
-        cast(null as date) as effective_end_date,
-        current_timestamp() as last_updated,
-        '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id,
-        row_number() over(partition by platform_name,store_name order by _daton_batch_runtime desc) row_num
-	      from {{i}}
-            {% if is_incremental() %}
-            {# /* -- this filter will only be applied on an incremental run */ #}
-            WHERE {{to_epoch_milliseconds('current_timestamp()')}}  >= {{max_loaded}}
-            {% endif %}
-        ) where row_num = 1
+    select 
+    {{ dbt_utils.surrogate_key(['platform_name','store_name']) }} AS platform_key, 
+    platform_name,
+    type,
+    store_name,
+    description,
+    status,
+    last_updated_date as effective_start_date,
+    cast(null as date) as effective_end_date,
+    current_timestamp() as last_updated,
+    '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id
+        from {{i}}
+        {% if is_incremental() %}
+        {# /* -- this filter will only be applied on an incremental run */ #}
+        WHERE {{to_epoch_milliseconds('current_timestamp()')}}  >= {{max_loaded}}
+        {% endif %}
     {% if not loop.last %} union all {% endif %}
 {% endfor %}
 

@@ -2,11 +2,8 @@ select
 brand,
 {{store_name('store')}},
 campaignId as campaign_id,
-campaignName as campaign_name,
 cast(null as string) as flow_id,
-cast(null as string) as flow_name,
 AdgroupId as adgroup_id, 
-AdgroupName as adgroup_name,
 AdId as ad_id, 
 cast(null as string) as product_id,
 cast(null as string) as sku,
@@ -16,7 +13,7 @@ exchange_currency_code,
 'Shopify' as platform_name,
 'Bing' as ad_channel,
 'Bing' as campaign_type, 
-cast(null as string) as flow_type,
+'Bing' as ad_type,
 sum(cast(clicks as int)) clicks,
 sum(cast(impressions as int)) impressions,
 sum(cast(conversions as int)) conversions,
@@ -27,4 +24,4 @@ sum(cast(null as numeric)) email_deliveries,
 sum(cast(null as numeric)) email_opens,
 sum(cast(null as numeric)) email_unsubscriptions
 from {{ ref('BingAdPerformanceReport') }}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15

@@ -1,18 +1,30 @@
-select 
-date(created_at) as order_date,
-order_id,
-_daton_batch_runtime,
-coalesce(email,'') as email,
-'Shopify' as acquisition_channel
-from {{ ref('ShopifyOrdersCustomer') }}
+select * {{exclude()}} (row_num)
+from (
+    select *,
+    row_number() over(partition by customer_id order by last_updated_date desc) row_num
+    from 
+        (
+        select
+        customer_id,
+        email, 
+        'Shopify' as acquisition_channel,
+        date(created_at) as order_date,
+        cast(order_id as string) as order_id,
+        date(created_at) last_updated_date
+        from {{ ref('ShopifyOrdersCustomer') }}
 
-union all
+        union all
 
-select
-cast(null as date) as order_date,
-cast(null as string) as order_id,
-_daton_batch_runtime,
-coalesce(email,'') as email,
-'null' as acquisition_channel
-from {{ ref('ShopifyCustomers') }}
-where email not in (select distinct email from {{ ref('ShopifyOrdersCustomer') }})
+        select
+        customers_id as customer_id,
+        email, 
+        'Shopify' as acquisition_channel,
+        cast(null as date) as order_date,
+        cast(null as string) as order_id,
+        cast(null as date) last_updated_date
+        from {{ ref('ShopifyCustomers') }}
+        where customers_id not in (select distinct customer_id from {{ ref('ShopifyOrdersCustomer') }})
+        ) 
+    ) 
+where row_num = 1
+

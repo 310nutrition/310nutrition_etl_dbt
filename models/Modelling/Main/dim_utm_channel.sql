@@ -38,7 +38,7 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
         keyword,
         content,
         channel_name,
-        {{from_epoch_milliseconds()}} as effective_start_date,
+        last_updated_date as effective_start_date,
         cast(null as date) as effective_end_date,
         current_timestamp() as last_updated,
         '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id

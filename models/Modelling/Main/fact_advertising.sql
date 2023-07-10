@@ -23,7 +23,7 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
 {% endif %}
 
 {% set table_name_query %}
-{{set_table_name_modelling('fact_advertising%')}}
+{{set_table_name_modelling('fact_advertising%')}} 
 {% endset %}  
 
 {% set results = run_query(table_name_query) %}
@@ -37,10 +37,10 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
 
 {% for i in results_list %}
     select
-    {{ dbt_utils.surrogate_key(['campaign_id','campaign_type','campaign_name','ad_channel'])}} AS campaign_key,
-    {{ dbt_utils.surrogate_key(['adgroup_id', 'adgroup_name', 'ad_channel'])}} AS adgroup_key,
-    {{ dbt_utils.surrogate_key(['ad_id', 'ad_channel']) }} AS ad_key,
-    {{ dbt_utils.surrogate_key(['flow_id', 'flow_type', 'flow_name', 'ad_channel']) }} AS flow_key,
+    {{ dbt_utils.surrogate_key(['campaign_id','campaign_type'])}} AS campaign_key,
+    {{ dbt_utils.surrogate_key(['adgroup_id','campaign_type'])}} AS adgroup_key,
+    {{ dbt_utils.surrogate_key(['ad_id', 'ad_type']) }} AS ad_key,
+    {{ dbt_utils.surrogate_key(['flow_id','ad_channel']) }} AS flow_key,
     {{ dbt_utils.surrogate_key(['brand'])}} AS brand_key,
     {{ dbt_utils.surrogate_key(['platform_name','store_name'])}} AS platform_key,
     {{ dbt_utils.surrogate_key(['product_id','sku','platform_name'])}} AS product_key,

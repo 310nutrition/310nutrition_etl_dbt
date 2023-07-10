@@ -232,9 +232,6 @@ models:
       cluster_by: ['brand_key','campaign_key','adgroup_key']
 
       
-       
-      
-      
 
   - name: fact_finances
     config:
@@ -246,10 +243,6 @@ models:
  
       
       
-      
-              
-      
-
   - name: fact_inventory
     config:
       materialized: incremental
@@ -260,21 +253,15 @@ models:
     
              
 
-
   - name: fact_order_lines
     config:
       materialized: incremental
       incremental_strategy: merge
-      unique_key: ['date','brand_key','customer_key','product_key','platform_key','order_key','subscription_key','is_cancelled','transaction_type','reason']
+      unique_key: ['date','brand_key','customer_key','product_key','platform_key','order_key','subscription_key','shipping_address_key','billing_address_key','is_cancelled','transaction_type','reason']
       partition_by: { 'field': 'date', 'data_type': 'date' }
       cluster_by: ['date','brand_key','customer_key'] 
-    
 
-      
-              
-      
 
-      
 
   - name: fact_orders
     config:
@@ -286,8 +273,6 @@ models:
     
       
           
-      
-
   - name: fact_purchase_orders
     config:
       materialized: incremental
@@ -296,9 +281,6 @@ models:
       partition_by: { 'field': 'order_date', 'data_type': 'date' }
       cluster_by: ['order_date','brand_key'] 
 
-      
-    
-            
       
 
   - name: fact_sales_distribution
@@ -310,9 +292,6 @@ models:
       cluster_by: ['order_date','brand_key']
 
  
-      
-     
-      
 
   - name: fact_targeting
     config:
@@ -322,12 +301,6 @@ models:
       partition_by: { 'field': 'date', 'data_type': 'date' }
       cluster_by: ['date','brand_key','campaign_key','adgroup_key']
    
-      
-    
-     
-      
-            
-      
       
 
   - name: fact_traffic

@@ -18,7 +18,7 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
 
 {% set table_name_query %}
 {{set_table_name_modelling('fact_order_lines%')}} 
-and lower(table_name) not like 'fact_order_lines_unicom%'
+and lower(table_name) not like 'fact_order_lines_unicom%' 
 {% endset %}  
 
 {% set results = run_query(table_name_query) %}
@@ -31,15 +31,15 @@ and lower(table_name) not like 'fact_order_lines_unicom%'
 {% endif %}
 
 {% for i in results_list %}
-
     select 
     {{ dbt_utils.surrogate_key(['order_id','platform_name']) }} AS order_key,
     {{ dbt_utils.surrogate_key(['platform_name','store_name']) }} AS platform_key,
     {{ dbt_utils.surrogate_key(['brand']) }} AS brand_key,
     {{ dbt_utils.surrogate_key(['product_id', 'sku','platform_name']) }} AS product_key,
-    {{ dbt_utils.surrogate_key(['email']) }} AS customer_key,
+    {{ dbt_utils.surrogate_key(['customer_id']) }} AS customer_key,
     {{ dbt_utils.surrogate_key(['subscription_id','sku']) }} AS subscription_key,
-    platform_name,
+    {{ dbt_utils.surrogate_key(['ship_address_type','ship_address_1','ship_address_2','ship_city','ship_district','ship_state','ship_country','ship_postal_code']) }} AS shipping_address_key,
+    {{ dbt_utils.surrogate_key(['bill_address_type','bill_address_1','bill_address_2','bill_city','bill_district','bill_state','bill_country','bill_postal_code']) }} AS billing_address_key,
     date,
     transaction_type,
     reason,

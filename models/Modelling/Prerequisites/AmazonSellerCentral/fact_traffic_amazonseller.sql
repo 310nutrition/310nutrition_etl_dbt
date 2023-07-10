@@ -4,7 +4,7 @@ brand,
 {{ store_name('marketplaceName') }},
 'Amazon Seller Central' as platform_name,
 childASIN as product_id,
-cast(b.sku as string) as sku,
+cast(null as string) as sku,
 cast(null as string) event_name,
 '' as source,
 '' as medium,
@@ -27,5 +27,5 @@ sum(cast(null as numeric)) as glance_views,
 avg(buyBoxPercentage) as buybox_percentage,
 sum(unitsOrdered) as quantity,
 sum(orderedProductSales_amount) as product_sales
-from {{ ref('SalesAndTrafficReportByChildASIN') }} a
+from {{ ref('SalesAndTrafficReportByChildASIN') }} 
 group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15

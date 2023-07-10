@@ -1,5 +1,3 @@
-
-
 with inventory_health as (
 {{ dbt_utils.unpivot(ref('inventoryhealth_view'), cast_to='int', exclude=['brand','marketplaceName','asin','sku','snapshot_date']) }}
 )

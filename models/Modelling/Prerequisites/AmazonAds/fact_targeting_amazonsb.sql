@@ -2,9 +2,7 @@ select
 brand,
 {{ store_name('countryName') }},
 cast(campaignId as string) campaign_id,
-campaignName as campaign_name,
 adGroupId as adgroup_id,
-adGroupName as adgroup_name, 
 cast(null as string) as ad_id,
 date(reportDate) as date,
 coalesce(query,'') search_term,
@@ -18,6 +16,7 @@ cast(a.currency as string) as exchange_currency_code,
 'Amazon Seller Central' as platform_name,
 'Amazon' as ad_channel,
 'Sponsored Brands' as campaign_type,
+'Sponsored Brands' as ad_type,
 case when lower(matchType) in ('targeting_expression_predefined') then 'Automatic Targeting'
 when lower(matchType) in ('broad','phrase','exact') then 'Manual Keyword Targeting'
 else 'Others' end as targeting_type,
@@ -36,7 +35,7 @@ from {{ ref('SBSearchTermKeywordsReport')}} ) a
 {% if var('currency_conversion_flag') %}
 left join {{ ref('ExchangeRates')}} b on date(a.reportDate) = b.date and a.currency = b.to_currency_code
 {% endif %}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 
 union all 
 
@@ -44,9 +43,7 @@ select
 brand,
 {{ store_name('countryName') }},
 cast(campaignId as string) campaign_id,
-campaignName as campaign_name,
 adGroupId as adgroup_id,
-adGroupName as adgroup_name, 
 cast(null as string) as ad_id,
 date(reportDate) as date,
 '' as search_term,
@@ -60,6 +57,7 @@ cast(a.currency as string) as exchange_currency_code,
 'Amazon Seller Central' as platform_name,
 'Amazon' as ad_channel,
 'Sponsored Brands' as campaign_type,
+'Sponsored Brands' as ad_type,
 case when lower(targetingType) in ('targeting_expression_predefined') then 'Automatic Targeting'
 when lower(targetingType) in ('targeting_expression') and lower(targetingText) like 'category%' then 'Manual Product Targeting' 
 when lower(targetingType) in ('targeting_expression') and lower(targetingText) not like 'category%' then 'Manual Category Targeting'
@@ -79,4 +77,4 @@ from {{ ref('SBTargetReport')}} ) a
 {% if var('currency_conversion_flag') %}
 left join {{ ref('ExchangeRates')}} b on date(a.reportDate) = b.date and a.currency = b.to_currency_code
 {% endif %}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15

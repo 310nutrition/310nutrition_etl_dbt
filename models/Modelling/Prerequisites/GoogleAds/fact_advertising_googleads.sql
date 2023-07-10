@@ -2,11 +2,8 @@ select
 brand,
 {{store_name('store')}},
 cast(campaign_id as string) campaign_id,
-campaign_name,
 cast(null as string) as flow_id,
-cast(null as string) as flow_name,
 cast(ad_group_id as string) as adgroup_id, 
-ad_group_name as adgroup_name, 
 cast(null as string) as ad_id,
 cast(product_item_id as string) as product_id,
 cast(null as string) as sku,
@@ -14,9 +11,9 @@ date(date) as date,
 exchange_currency_rate,
 exchange_currency_code,
 'Shopify' as platform_name,
-campaign_advertising_channel_type as ad_channel,
-'Google' as campaign_type,
-cast(null as string) as flow_type,
+'Google' as ad_channel,
+campaign_advertising_channel_type as campaign_type,
+campaign_advertising_channel_type as ad_type,
 sum(cast(clicks as numeric)) clicks,
 sum(cast(impressions as numeric)) impressions,
 sum(conversions) conversions,
@@ -27,7 +24,7 @@ sum(cast(null as numeric)) email_deliveries,
 sum(cast(null as numeric)) email_opens,
 sum(cast(null as numeric)) email_unsubscriptions
 from {{ ref('GoogleAdsShoppingPerformanceView') }}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 
 union all
 
@@ -35,11 +32,8 @@ select
 brand,
 {{store_name('store')}},
 cast(campaign_id as string) campaign_id,
-campaign_name,
 cast(null as string) as flow_id,
-cast(null as string) as flow_name,
 cast(null as string) as adgroup_id, 
-cast(null as string) as adgroup_name, 
 cast(null as string) as ad_id,
 cast(null as string) as product_id,
 cast(null as string) as sku,
@@ -49,7 +43,7 @@ exchange_currency_code,
 'Shopify' as platform_name,
 'Google' as ad_channel,
 campaign_advertising_channel_type as campaign_type,
-cast(null as string) as flow_type,
+campaign_advertising_channel_type as ad_type,
 sum(cast(clicks as numeric)) clicks,
 sum(cast(impressions as numeric)) impressions,
 sum(conversions) conversions,
@@ -61,4 +55,4 @@ sum(cast(null as numeric)) email_opens,
 sum(cast(null as numeric)) email_unsubscriptions
 from {{ ref('GoogleAdsCampaign') }}
 where campaign_advertising_channel_type != 'SHOPPING'
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15

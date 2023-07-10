@@ -2,9 +2,7 @@ select
 brand,
 {{ store_name('countryName') }},
 cast(campaignId as string) campaign_id,
-campaignName as campaign_name,
 adGroupId as adgroup_id,
-adGroupName as adgroup_name, 
 cast(null as string) as ad_id,
 date(reportDate) as date,
 coalesce(query,'') search_term,
@@ -13,6 +11,7 @@ exchange_currency_code,
 'Amazon Seller Central' as platform_name,
 'Amazon' as ad_channel,
 'Sponsored Products' as campaign_type,
+'Sponsored Products' as ad_type,
 case when lower(matchType) in ('targeting_expression_predefined') then 'Automatic Targeting'
 when lower(matchType) in ('broad','phrase','exact') then 'Manual Keyword Targeting'
 when lower(matchType) in ('targeting_expression') and lower(targetingText) like 'category%' then 'Manual Product Targeting' 
@@ -27,4 +26,4 @@ sum(attributedUnitsOrdered7d) as quantity,
 sum(cost) as spend,
 sum(attributedSales7d) as sales 
 from {{ ref('SPSearchTermKeywordReport')}}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15

@@ -31,18 +31,33 @@ and lower(table_name) not like '%address%'
 {% endif %}
 
 
-select * {{exclude()}} (row_num) from (
+select * {{exclude()}} (row_num, order_date) from (
+select
+customer_key,
+customer_id,
+email,
+order_date,
+last_order_date,
+acquisition_date,
+acquisition_channel,
+effective_start_date,
+effective_end_date,
+last_updated,
+_run_id,
+row_number() over(partition by customer_key order by acquisition_date) row_num
+from (
 select *,
-row_number() over(partition by email order by effective_start_date desc) row_num
+MAX(order_date) OVER (PARTITION BY customer_key) AS last_order_date,
+MIN(order_date) OVER (PARTITION BY customer_key) AS acquisition_date
 from (
 {% for i in results_list %}
     select 
-    {{ dbt_utils.surrogate_key(['email']) }} AS customer_key,
+    {{ dbt_utils.surrogate_key(['customer_id']) }} AS customer_key,
+    customer_id,
     email,
-    MAX(order_date) OVER (PARTITION BY email) AS last_order_date,
-    MIN(order_date) OVER (PARTITION BY email) AS acquisition_date,
+    order_date,
     acquisition_channel,
-    {{from_epoch_milliseconds()}} as effective_start_date,
+    last_updated_date as effective_start_date,
     cast(null as date) as effective_end_date,
     current_timestamp() as last_updated,
     '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id
@@ -53,4 +68,4 @@ from (
     {% endif %}   
     {% if not loop.last %} union all {% endif %}
     {% endfor %}
-)) where row_num = 1 and email != ''
+))) where row_num = 1

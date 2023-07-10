@@ -2,11 +2,8 @@ select
 brand,
 {{ store_name('countryName') }},
 campaignId as campaign_id,
-campaignName as campaign_name,
 cast(null as string) as flow_id,
-cast(null as string) as flow_name,
 adGroupId as  adgroup_id, 
-adGroupName as adgroup_name, 
 adId as ad_id,
 asin as product_id,
 sku,
@@ -16,7 +13,7 @@ exchange_currency_code,
 'Amazon Seller Central' as platform_name,
 'Amazon' as ad_channel,
 'Sponsored Display' as campaign_type,
-cast(null as string) as flow_type,
+'Sponsored Display' as ad_type,
 sum(clicks) as clicks,
 sum(impressions) as impressions,
 sum(viewAttributedConversions14d) as conversions,
@@ -27,4 +24,4 @@ sum(cast(null as numeric)) email_deliveries,
 sum(cast(null as numeric)) email_opens,
 sum(cast(null as numeric)) email_unsubscriptions
 from {{ ref('SDProductAdsReport')}}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15

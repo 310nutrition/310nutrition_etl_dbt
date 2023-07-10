@@ -7,7 +7,7 @@ select * {{exclude()}} (row_num) from
     'Klaviyo' as ad_channel, 
     status,
     date(updated_date) as last_updated_date,
-    row_number() over(partition by id order by _daton_batch_runtime desc) row_num
+    row_number() over(partition by id order by date(updated_date) desc) row_num
     from {{ ref('KlaviyoFlows')}} 
     ) search_term
 where row_num = 1

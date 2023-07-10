@@ -41,7 +41,7 @@ from (
     '' as keyword,
     '' as  content,
     string_value as landing_page_path,
-    date({{from_epoch_milliseconds_gen('a.event_date')}}) as date,
+    DATE(CONCAT(SUBSTRING(a.event_date, 1, 4), '-', SUBSTRING(a.event_date, 5, 2), '-', SUBSTRING(a.event_date, 7, 2))) date,
     case when category = 'mobile' and a.event_name = 'session_start' then 1 else 0 end as mobile_sessions,
     case when category = 'desktop' and a.event_name = 'session_start' then 1 else 0 end as browser_sessions,
     case when category = 'tablet' and a.event_name = 'session_start' then 1 else 0 end as tablet_sessions,

@@ -17,10 +17,12 @@ sum(cast(order_shipping_price as numeric)) as shipping_price,
 cast(null as numeric) as giftwrap_price, 
 sum(cast(total_discounts AS numeric)) as order_discount,
 sum(cast(null as numeric)) as shipping_discount,
-email
+customer_id
 from (
 select *
 from {{ ref('ShopifyOrders') }}) ord
+left join (select distinct customer_id, email from  {{ ref('ShopifyOrdersCustomer') }}) info
+on ord.email = info.email
 left join (select order_id,brand,sum(cast(line_items_quantity as numeric)) order_quantity, sum(CAST(line_items_price AS numeric)) order_price from {{ref('ShopifyOrdersLineItems')}} group by 1,2) ord_ln_itms
 on ord.order_id=ord_ln_itms.order_id and ord.brand = ord_ln_itms.brand
 left join (select order_id,brand,sum(cast(shipping_lines_price as numeric)) order_shipping_price from {{ref('ShopifyOrdersShippingLines')}} group by 1,2) ord_shp_lns
@@ -48,7 +50,7 @@ cast(null as numeric) as shipping_price,
 cast(null as numeric) as giftwrap_price, 
 sum(cast(refund_discount as numeric)) order_discount,
 cast(null as numeric) as shipping_discount, 
-'' as email
+cast(null as string) as customer_id
 from {{ ref('ShopifyRefundsTransactions')}} rfnd_tran
 left join (select cast(refund_id as string) as order_id, sum(cast(refund_line_items_quantity as numeric)) return_quantity, sum(refund_line_items_subtotal) refund_price, sum(refund_line_items_total_tax) refund_tax from {{ref('ShopifyRefundsRefundLineItems')}} group by 1) rfnd_lns
 on cast(rfnd_tran.refund_id as string)=rfnd_lns.order_id

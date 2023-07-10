@@ -69,11 +69,8 @@ select
 delivered_email.brand,
 {{ store_name('delivered_email.store') }},
 campaigns.id as campaign_id,
-delivered_email.Campaign_Name as campaign_name,
 flows.id as flow_id,
-delivered_email.flow as flow_name,
 '' as adgroup_id, 
-'' as adgroup_name,
 '' as ad_id, 
 '' as product_id,
 '' as sku,
@@ -88,7 +85,7 @@ attributed_orders._currency_code as exchange_currency_code,
 'Shopify' as platform_name,
 'Klaviyo' as ad_channel,
 'Email Marketing' as campaign_type,
-trigger_type as flow_type,
+'Email Marketing' as ad_type,
 sum(cast(clicks as numeric)) clicks,
 sum(cast(null as numeric)) as impressions,
 sum(cast(quantity as numeric)) conversions,
@@ -128,5 +125,5 @@ left join (select distinct id, name from {{ ref('KlaviyoCampaigns') }}) campaign
 on delivered_email.Campaign_Name = campaigns.name
 left join (select distinct id, name, trigger_type from {{ ref('KlaviyoFlows') }}) flows 
 on delivered_email.flow = flows.name
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 

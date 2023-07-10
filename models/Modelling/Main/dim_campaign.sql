@@ -37,10 +37,8 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
 {% endif %}
 
 {% for i in results_list %}
-
-    select * {{exclude()}} (row_num) from (
     select 
-    {{ dbt_utils.surrogate_key(['campaign_id', 'campaign_type', 'campaign_name', 'ad_channel']) }} AS campaign_key, 
+    {{ dbt_utils.surrogate_key(['campaign_id','campaign_type']) }} AS campaign_key, 
     campaign_id, 
     campaign_type, 
     campaign_name,
@@ -53,17 +51,14 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
     campaign_placement,
     bidding_amount, 
     bidding_strategy_type,
-    {{from_epoch_milliseconds()}} as effective_start_date,
+    last_updated_date as effective_start_date,
     cast(null as date) as effective_end_date,
     current_timestamp() as last_updated,
-    '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id,
-    row_number() over(partition by campaign_id, campaign_name order by _daton_batch_runtime desc) row_num
-        
+    '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id
 	from {{i}} 
         {% if is_incremental() %}
         {# /* -- this filter will only be applied on an incremental run */ #}
         WHERE {{to_epoch_milliseconds('current_timestamp()')}}  >= {{max_loaded}}
         {% endif %}  
-    ) where row_num = 1 
 {% if not loop.last %} union all {% endif %}
 {% endfor %}

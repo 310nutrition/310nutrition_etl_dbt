@@ -30,7 +30,6 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
 {% endif %}
 
 {% for i in results_list %}
-
         select
         {{ dbt_utils.surrogate_key(['order_id','platform_name']) }} AS order_key, 
         platform_name,

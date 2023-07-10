@@ -35,9 +35,9 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
 {% for i in results_list %}
     select 
     {{ dbt_utils.surrogate_key(['targeting_type','targeting_id','search_term','platform_name']) }} AS targeting_key,
-    {{ dbt_utils.surrogate_key(['campaign_id','campaign_type','campaign_name','ad_channel'])}} AS campaign_key,
-    {{ dbt_utils.surrogate_key(['adgroup_id', 'adgroup_name', 'ad_channel'])}} AS adgroup_key,
-    {{ dbt_utils.surrogate_key(['ad_id', 'ad_channel']) }} AS ad_key,
+    {{ dbt_utils.surrogate_key(['campaign_id','campaign_type'])}} AS campaign_key,
+    {{ dbt_utils.surrogate_key(['adgroup_id','campaign_type'])}} AS adgroup_key,
+    {{ dbt_utils.surrogate_key(['ad_id', 'ad_type']) }} AS ad_key,
     {{ dbt_utils.surrogate_key(['brand']) }} AS brand_key,
     {{ dbt_utils.surrogate_key(['platform_name','store_name']) }} AS platform_key,
     date,

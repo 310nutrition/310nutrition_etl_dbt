@@ -1,5 +1,8 @@
 -- Dependencies generated through pipeline script.
+-- depends_on: {{ ref('dim_ads_klaviyo') }}
+-- depends_on: {{ ref('dim_ads_amazonsbv') }}
 -- depends_on: {{ ref('dim_ads_amazonsp') }}
+-- depends_on: {{ ref('dim_ads_amazonsb') }}
 -- depends_on: {{ ref('dim_ads_amazonsd') }}
 -- depends_on: {{ ref('dim_ads_bingads') }}
 -- depends_on: {{ ref('dim_ads_facebookads') }}
@@ -34,25 +37,21 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
 {% endif %}
 
 {% for i in results_list %}
-
-    select * {{exclude()}} (row_num) from (
         select  
-        {{ dbt_utils.surrogate_key(['ad_id', 'ad_channel']) }} AS ad_key,
-        {{ dbt_utils.surrogate_key(['adgroup_id', 'adgroup_name', 'ad_channel']) }} AS adgroup_key,
+        {{ dbt_utils.surrogate_key(['ad_id', 'ad_type']) }} AS ad_key,
+        {{ dbt_utils.surrogate_key(['adgroup_id','campaign_type']) }} AS adgroup_key,
         ad_id, 
         ad_channel,
         ad_name, 
         ad_type,
-        {{from_epoch_milliseconds()}} as effective_start_date,
+        last_updated_date as effective_start_date,
         cast(null as date) as effective_end_date,
         current_timestamp() as last_updated,
-        '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id,
-        row_number() over(partition by ad_id, ad_channel, ad_type order by _daton_batch_runtime desc) row_num
+        '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id
 	      from {{i}}
             {% if is_incremental() %}
             {# /* -- this filter will only be applied on an incremental run */ #}
             WHERE {{to_epoch_milliseconds('current_timestamp()')}}  >= {{max_loaded}}
             {% endif %}
-      ) where row_num = 1
     {% if not loop.last %} union all {% endif %}
 {% endfor %}

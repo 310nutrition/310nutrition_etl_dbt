@@ -1,25 +1,43 @@
-select main.* {{exclude()}}(amazon_order_id), coalesce(b.buyeremail,'') email
+select * {{exclude()}}(amazon_order_id, row_num)
 from (
-select
-ord.amazon_order_id,
-shp.buyer_name as full_name,
-ord.address_type,
-shp.ship_address_1 as addr_line_1,
-shp.ship_address_2 as addr_line_2,
-shp.ship_city as city,
-shp.ship_state as state,
-shp.ship_country as country,
-shp.ship_postal_code as postal_code,
-shp.ship_phone_number as phone,
-ord._daton_batch_runtime
-from {{ ref('FlatFileAllOrdersReportByLastUpdate') }} ord
-left join
- (select distinct amazon_order_id, coalesce(ship_address_1,'') as ship_address_1,
-  coalesce(ship_address_2,'') as ship_address_2, coalesce(ship_city,'') as ship_city,
-  coalesce(ship_state,'') as ship_state, coalesce(ship_country,'') as ship_country,
-  coalesce(ship_postal_code,'') as ship_postal_code, coalesce(ship_phone_number,'') as ship_phone_number, coalesce(buyer_name,'') as buyer_name, coalesce(buyer_email,'') as buyer_email
-from {{ ref('FBAAmazonFulfilledShipmentsReport') }}) shp
-on ord.amazon_order_id=shp.amazon_order_id
-) main
-left join {{ ref('ListOrder') }} b
-on main.amazon_order_id = b.amazonorderid
+    select
+    ord.amazon_order_id,
+    nullif(ord.address_type, '') address_type,
+    nullif(shp.addr_line_1, '') addr_line_1,
+    nullif(shp.addr_line_2, '') addr_line_2,
+    nullif(shp.city, '') city,
+    '' as district,
+    nullif(shp.state, '') state,
+    nullif(shp.country, '') country,
+    nullif(shp.postal_code, '') postal_code,
+    date(ord.last_updated_date) last_updated_date,
+    row_number() over(partition by ord.address_type, shp.addr_line_1, shp.addr_line_2, shp.city, shp.state, shp.country, shp.postal_code  order by date(ord.last_updated_date)) row_num
+    from {{ ref('FlatFileAllOrdersReportByLastUpdate') }} ord
+    left join
+    (
+    select 
+    distinct 
+    amazon_order_id, 
+    ship_address_1 as addr_line_1,
+    ship_address_2 as addr_line_2,
+    ship_city as city,
+    ship_state as state,
+    ship_country as country,
+    ship_postal_code as postal_code
+    from {{ ref('FBAAmazonFulfilledShipmentsReport') }}
+    
+    union all
+
+    select 
+    distinct amazon_order_id, 
+    bill_address_1 as addr_line_1,
+    ship_address_2 as addr_line_2,
+    ship_city as city,
+    ship_state as state,
+    ship_country as country,
+    ship_postal_code as postal_code
+    from {{ ref('FBAAmazonFulfilledShipmentsReport') }}
+    ) shp
+    on ord.amazon_order_id=shp.amazon_order_id
+    ) 
+where row_num = 1

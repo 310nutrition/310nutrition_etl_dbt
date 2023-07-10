@@ -2,11 +2,8 @@ select
 brand,
 {{ store_name('countryName') }},
 campaignId as campaign_id,
-campaignName as campaign_name,
 cast(null as string) as flow_id,
-cast(null as string) as flow_name,
 adGroupId as  adgroup_id, 
-adGroupName as adgroup_name, 
 cast(null as string) as ad_id,
 cast(null as string) as product_id,
 cast(null as string) as sku,
@@ -21,7 +18,7 @@ cast(a.currency as string) as exchange_currency_code,
 'Amazon Seller Central' as platform_name,
 'Amazon' as ad_channel,
 'Sponsored Brand Videos' as campaign_type,
-cast(null as string) as flow_type,
+'Sponsored Brand Videos' as ad_type,
 sum(clicks) as clicks,
 sum(impressions) as impressions,
 sum(attributedConversions14d) as conversions,
@@ -38,4 +35,4 @@ from {{ ref('SBAdGroupsVideoReport') }} ) a
 {% if var('currency_conversion_flag') %}
 left join {{ ref('ExchangeRates') }} b on date(a.reportDate) = b.date and a.currency = b.to_currency_code
 {% endif %}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
