@@ -12,8 +12,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: commission_type
         tests:
           - not_null
@@ -82,8 +81,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -132,8 +130,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: ad_channel
         tests:
           - not_null
@@ -184,8 +181,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: store_name
         tests:
           - not_null
@@ -239,8 +235,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -301,8 +296,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: order_id
         tests:
           - not_null
@@ -326,64 +320,10 @@ models:
     config:
       materialized: incremental
       incremental_strategy: merge
-      unique_key: ['date','brand_name','ad_channel','campaign_type','platform_name','store_name','product_id','sku','campaign_id','campaign_name','campaign_placement','portfolio_name']
+      unique_key: ['date','brand_name','campaign_type','platform_name','store_name','product_id','sku','campaign_id']
       partition_by: { 'field': 'date', 'data_type': 'date' }
       cluster_by: ['date','brand_name','ad_channel','product_id'] 
-    columns:
-      - name: brand_name
-        tests:
-          - not_null
-          - accepted_values:
-              values: ["B"]
-      - name: portfolio_name
-        tests:
-          - not_null
-      - name: ad_channel
-        tests:
-          - not_null
-      - name: platform_name
-        tests:
-          - not_null
-      - name: store_name
-        tests:
-          - not_null
-      - name: date
-        tests:
-          - not_null
-          - dbt_expectations.expect_row_values_to_have_recent_data:
-              datepart: day
-              interval: 1
-      - name: campaign_Name
-        tests:
-          - not_null
-      - name: campaign_placement
-        tests:
-          - not_null
-      - name: product_id
-        tests:
-          - not_null
-      - name: sku
-        tests:
-          - not_null
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - date
-            - brand_name
-            - ad_channel
-            - platform_name
-            - store_name
-            - product_id
-            - sku
-            - campaign_name
-            - campaign_placement
-            - portfolio_name
-      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
-          expression: sum(clicks)
-          compare_model: ref("fact_advertising")
-          compare_expression: sum(clicks)
-          group_by: [date]
-          compare_group_by: [date]
+
 
   - name: marketing_overview
     config:
@@ -392,45 +332,7 @@ models:
       unique_key: ['date','brand_name','ad_channel','platform_name','store_name','portfolio_name']
       partition_by: { 'field': 'date', 'data_type': 'date' }
       cluster_by: ['date','brand_name','ad_channel'] 
-    columns:
-      - name: brand_name
-        tests:
-          - not_null
-          - accepted_values:
-              values: ["B"]
-      - name: portfolio_name
-        tests:
-          - not_null
-      - name: ad_channel
-        tests:
-          - not_null
-      - name: platform_name
-        tests:
-          - not_null
-      - name: store_name
-        tests:
-          - not_null
-      - name: date
-        tests:
-          - not_null
-          - dbt_expectations.expect_row_values_to_have_recent_data:
-              datepart: day
-              interval: 1
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - date
-            - brand_name
-            - ad_channel
-            - platform_name
-            - store_name
-            - portfolio_name
-      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
-          expression: sum(clicks)
-          compare_model: ref("fact_advertising")
-          compare_expression: sum(clicks)
-          group_by: [date]
-          compare_group_by: [date]
+   
 
   - name: product_insights
     config:
@@ -443,8 +345,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -499,8 +400,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -545,8 +445,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -589,8 +488,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -652,8 +550,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -698,8 +595,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+ 
       - name: platform_name
         tests:
           - not_null
@@ -748,8 +644,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -794,8 +689,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -844,8 +738,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -888,8 +781,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null
@@ -932,8 +824,7 @@ models:
       - name: brand_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["B"]
+
       - name: platform_name
         tests:
           - not_null

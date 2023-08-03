@@ -7,7 +7,7 @@ select * {{exclude()}} (row_num) from
     cast(null as string) description,
     cast(null as string) status,
     date(last_updated_date) as last_updated_date,
-    row_number() over(order by date(last_updated_date) desc) row_num
+    row_number() over(partition by sales_channel order by date(last_updated_date) desc) row_num
     from {{ref('FlatFileAllOrdersReportByLastUpdate')}} 
     )
 where row_num = 1

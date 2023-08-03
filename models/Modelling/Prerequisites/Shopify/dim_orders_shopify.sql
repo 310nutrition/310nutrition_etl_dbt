@@ -13,6 +13,9 @@ select * {{exclude()}} (row_num) from
     'Shopify' as platform_name,
     ord.order_id,
     payment_gateway_names as payment_mode,
+    source,
+    medium,
+    campaign,
     {% if var('recharge_flag') %}
     recharge.order_channel,
     {% elif var('upscribe_flag') %}
@@ -22,7 +25,15 @@ select * {{exclude()}} (row_num) from
     {% endif %}
     date(updated_at) as last_updated_date,
     row_number() over(partition by ord.order_id order by ord._daton_batch_runtime desc) row_num
-    from {{ ref('ShopifyOrders') }} ord
+    from {{ ref('ShopifyOrders') }} ord 
+
+    left join (select distinct
+     source,
+     medium,
+     name as campaign,
+     transaction_id
+    from {{ ref('GoogleAnalyticsEventsEventParams')}} ) GA4
+    on ord.order_id = GA4.transaction_id
 
     {% if var('recharge_flag') %}
     left join (

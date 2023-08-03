@@ -72,7 +72,7 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
            date(timestamp(att.updated)) as updated_date,
         {% endif %}
         att.trigger_type,
-        links.self,
+        --links.self,
         _daton_user_id,
         _daton_batch_runtime,
         _daton_batch_id,
@@ -86,7 +86,7 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
         ROW_NUMBER() OVER (PARTITION BY id ORDER BY _daton_batch_runtime DESC) AS rnk
         FROM {{i}} a
         LEFT JOIN UNNEST (a.attributes) AS att
-        LEFT JOIN UNNEST (links) as links
+        --LEFT JOIN UNNEST (links) as links
     {% if is_incremental() %}
             {# /* -- this filter will only be applied on an incremental run */ #}
             WHERE _daton_batch_runtime  >= {{max_loaded}}

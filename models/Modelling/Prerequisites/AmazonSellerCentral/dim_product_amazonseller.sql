@@ -39,6 +39,39 @@ from (
   from {{ ref('AllListingsReport') }} alllistings
   left join (select ReferenceASIN, colorName, manufacturer, sizeName, displayGroupRanks_title from {{ ref('CatalogItems') }}) catalogitems
   on alllistings.asin1 = catalogitems.ReferenceASIN
+
+  union all
+
+  select 
+  distinct 
+  'Amazon Seller Central' as platform_name,
+  coalesce(childASIN,'') product_id,
+  cast(null as string) sku,
+  coalesce(item_name,'') product_name, 
+  cast(null as string) color,
+  cast(null as string) seller,
+  cast(null as string) size,
+  cast(null as string) product_category,
+  _daton_batch_runtime
+  from {{ ref('SalesAndTrafficReportByChildASIN') }} traffic
+  left join (select distinct asin1, item_name from {{ ref('AllListingsReport') }}) alllistings
+  on traffic.childASIN = alllistings.asin1
+
+  union all
+
+  select 
+  distinct 
+  'Amazon Seller Central' as platform_name,
+  coalesce(asin,'') product_id,
+  cast(sku as string) sku,
+  coalesce(product_name,'') product_name, 
+  cast(null as string) color,
+  cast(null as string) seller,
+  cast(null as string) size,
+  cast(null as string) product_category,
+  _daton_batch_runtime
+  from {{ ref('FlatFileAllOrdersReportByLastUpdate') }} traffic
+
 ) products
 
 {% if var('product_details_gs_flag') %}

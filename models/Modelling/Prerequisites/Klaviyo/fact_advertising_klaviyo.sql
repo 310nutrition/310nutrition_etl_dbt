@@ -1,4 +1,5 @@
 
+
 with delivered_email as (
     select 
     brand,
@@ -54,14 +55,14 @@ attributed_orders as (
     store,
     campaigns.name as Campaign_Name,
     flows.name as flow,
-    _currency_code,
-    sum(_value) as adsales,
+    currency_code,
+    sum(value) as adsales,
     sum(item_count) as quantity
     from {{ ref('KlaviyoPlacedOrder') }} orders
     left join (select distinct id, name from {{ ref('KlaviyoCampaigns') }}) campaigns 
-    on orders._message = campaigns.id
+    on orders.message = campaigns.id
     left join (select distinct id, name from {{ ref('KlaviyoFlows') }}) flows 
-    on orders._flow = flows.id
+    on orders.flow = flows.id
     group by 1,2,3,4,5,6
     )
 
@@ -77,10 +78,10 @@ flows.id as flow_id,
 delivered_email.date,
 {% if var('currency_conversion_flag') %}
 case when exchange_rates.value is null then 1 else exchange_rates.value end as exchange_currency_rate,
-case when exchange_rates.from_currency_code is null then attributed_orders._currency_code else exchange_rates.from_currency_code end as exchange_currency_code,
+case when exchange_rates.from_currency_code is null then attributed_orders.currency_code else exchange_rates.from_currency_code end as exchange_currency_code,
 {% else %}
 cast(1 as decimal) as exchange_currency_rate,
-attributed_orders._currency_code as exchange_currency_code, 
+attributed_orders.currency_code as exchange_currency_code, 
 {% endif %}
 'Shopify' as platform_name,
 'Klaviyo' as ad_channel,
@@ -119,7 +120,7 @@ and delivered_email.flow = attributed_orders.flow
 {% if var('currency_conversion_flag') %}
 left join {{ref('ExchangeRates')}} exchange_rates 
 on date(delivered_email.date) = exchange_rates.date 
-and attributed_orders._currency_code = exchange_rates.to_currency_code                      
+and attributed_orders.currency_code = exchange_rates.to_currency_code                      
 {% endif %}
 left join (select distinct id, name from {{ ref('KlaviyoCampaigns') }}) campaigns 
 on delivered_email.Campaign_Name = campaigns.name

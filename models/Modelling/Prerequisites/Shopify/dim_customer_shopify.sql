@@ -1,7 +1,7 @@
 select * {{exclude()}} (row_num)
 from (
     select *,
-    row_number() over(partition by customer_id order by last_updated_date desc) row_num
+    row_number() over(partition by order_id,customer_id order by last_updated_date desc) row_num
     from 
         (
         select

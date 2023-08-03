@@ -11,10 +11,11 @@ profile: "edm_data_transformation"
 vars:
   # raw_database: "EDM"
   # raw_schema: "EDM"
-  raw_database: "edm-saras"
-  raw_schema: "EDM_Daton"
-  mdl_database: "edm-saras"
-  mdl_schema: "edm_mdl_prerequisites"
+  raw_database: "nutritiondatondw"
+  raw_schema: "310nutrition_rawdata"
+  raw_schema_ga: "analytics_357547543"
+  mdl_database: "nutritiondatondw"
+  mdl_schema: "dbt_3nutrition_mdl_prerequisites"
 
   # Set the models to False in case you dont want them to be materialised
 
@@ -38,19 +39,45 @@ vars:
   default_storename: "US"
 
   # Set this flag to true if recharge is in the scope
-  recharge_flag: False
+  recharge_flag: True
 
   # Set this flag to true if upscribe is in the scope
   upscribe_flag: False
 
   # Set this flag to true if google analytics 4 is in the scope
-  ga_flag: False
+  ga_flag: True
 
   # Google Analytics 4 Account Platform Name Position
   platform_name_position: 2
 
-  timezone_conversion_flag: False
-  #timezone_conversion_hours: "-7"
+  timezone_conversion_flag: True
+  raw_table_timezone_conversion_hours: {
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_BouncedEmail":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Campaigns":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_ClickedEmail":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_ConsentedToRecieveSMS":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_DroppedEmail":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_FailedToDeliverSMS":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_FlowActions":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_FlowMessages":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Flows":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Lists":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_MarkedEmailAsSpam":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Metrics":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_OpenedEmail":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_OpenedPush":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_RecievedSMS":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Segments":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_SentSMS":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_SubscribedToList":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Unsubscribed":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_UnsubscribedFromList":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Recharge_Orders": 330,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Recharge_Orders": 330,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Recharge_Subscriptions":330,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Recharge_Subscriptions":330
+}
+  timezone_conversion_hours: -7
 
   # Variables used for dbt-tests
   'dbt_date:time_zone': 'America/Los_Angeles'

@@ -20,7 +20,7 @@ status,
 date(updated_at) updated_at,
 cancellation_reason,
 cancelled_at,
-order_day_of_month,
+--order_day_of_month,
 presentment_currency,
 cancellation_reason_comments,
 _daton_batch_runtime 

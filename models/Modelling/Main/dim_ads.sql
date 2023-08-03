@@ -1,9 +1,5 @@
 -- Dependencies generated through pipeline script.
 -- depends_on: {{ ref('dim_ads_klaviyo') }}
--- depends_on: {{ ref('dim_ads_amazonsbv') }}
--- depends_on: {{ ref('dim_ads_amazonsp') }}
--- depends_on: {{ ref('dim_ads_amazonsb') }}
--- depends_on: {{ ref('dim_ads_amazonsd') }}
 -- depends_on: {{ ref('dim_ads_bingads') }}
 -- depends_on: {{ ref('dim_ads_facebookads') }}
 -- depends_on: {{ ref('dim_ads_googleads') }}

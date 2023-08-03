@@ -4,7 +4,7 @@ row_number() over(partition by ad_type order by last_updated_date desc) row_num
 from (
     select 
     cast(null as string) as ad_id,
-    campaign_advertising_channel_type as ad_channel,
+    'Google' as ad_channel,
     cast(null as string) as ad_name,
     campaign_advertising_channel_type as ad_type,
     campaign_advertising_channel_type as campaign_type, 
@@ -17,7 +17,7 @@ from (
 
     select 
     cast(null as string) as ad_id,
-    campaign_advertising_channel_type as ad_channel,
+    'Google' as ad_channel,
     cast(null as string) as ad_name,
     campaign_advertising_channel_type as ad_type,
     campaign_advertising_channel_type as campaign_type, 
