@@ -51,7 +51,7 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
         SELECT
         '{{brand}}' as brand,
         '{{id}}' as store,
-        event_properties.extra,
+        --event_properties.extra,
         attribution.attributed_event_id,
         attribution.send_ts,
         attribution.message,

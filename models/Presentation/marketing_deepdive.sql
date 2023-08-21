@@ -1,5 +1,6 @@
 select 
 brand_name,
+portfolio_id,
 portfolio_name,
 g.ad_channel,
 e.campaign_type,
@@ -35,4 +36,4 @@ left join {{ ref('dim_adgroup')}} f
 on a.adgroup_key = f.adgroup_key
 left join {{ ref('dim_ads')}} g
 on a.ad_key = g.ad_key
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16

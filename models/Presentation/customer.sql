@@ -3,13 +3,14 @@ email,
 order_id,
 b.customer_id,
 {% if var('ga_flag') %}
-case when a.subscription_id is not null then 'Subscriber' else 'Non-Subscriber' end as customer_type, 
+case when g.subscription_id is not null then 'Subscriber' else 'Non-Subscriber' end as customer_type, 
 {% endif %} 
 date,
 acquisition_date,
 substr(cast(acquisition_date as STRING),1,7) as acquisition_month,
 substr(cast(date as STRING),1,7) as order_month,
 last_order_date,
+is_cancelled,
 brand_name,
 e.platform_name,
 e.store_name,
@@ -20,9 +21,10 @@ c.medium,
 c.campaign,
 f.sku,
 currency_code,
-sum(item_total_price) item_total_price,
-sum(item_subtotal_price) item_subtotal_price,
-sum(quantity) quantity
+sum(item_total_price) as item_total_price ,
+sum(item_subtotal_price) as item_subtotal_price,
+sum(quantity) as quantity,
+dense_rank() over(partition by b.customer_id,e.platform_name,e.store_name,is_cancelled order by date, order_id) as order_number --added by Akash
 from {{ ref('fact_order_lines')}} a
 left join {{ ref('dim_customer')}} b
 on a.customer_key = b.customer_key
@@ -40,7 +42,7 @@ on a.subscription_key = g.subscription_key
 {% endif %} 
 where email is not null and transaction_type = 'Order'
 {% if var('ga_flag') %}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
 {% else %}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
 {% endif %} 

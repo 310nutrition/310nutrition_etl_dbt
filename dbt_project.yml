@@ -30,7 +30,7 @@ vars:
   # if get_brandname_from_tablename_flag = True, position of brand name in the daton integration name
   brandname_position_in_tablename: 0
   # if get_brandname_from_tablename_flag = False, provide the brand name to be populated in the table
-  default_brandname: "Default"
+  default_brandname: "310 Nutrition"
 
   get_storename_from_tablename_flag: True    
   # if get_storename_from_tablename_flag = True, position of store name in the daton integration name
@@ -72,10 +72,12 @@ vars:
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_SubscribedToList":-7,
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Unsubscribed":-7,
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_UnsubscribedFromList":-7,
-"nutritiondatondw.310nutrition_rawdata.TTN_US_Recharge_Orders": 330,
-"nutritiondatondw.310nutrition_rawdata.TTN_CA_Recharge_Orders": 330,
-"nutritiondatondw.310nutrition_rawdata.TTN_US_Recharge_Subscriptions":330,
-"nutritiondatondw.310nutrition_rawdata.TTN_CA_Recharge_Subscriptions":330
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_orders":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_orders":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_ad_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_ad_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_search_query_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_search_query_performance_report" : -7
 }
   timezone_conversion_hours: -7
 
