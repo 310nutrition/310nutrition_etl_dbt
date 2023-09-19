@@ -48,7 +48,6 @@ SELECT coalesce(MAX({{to_epoch_milliseconds('last_updated')}}) - 2592000000,0) F
         round((order_discount/exchange_currency_rate),2) as order_discount,
         round((shipping_discount/exchange_currency_rate),2) as shipping_discount,
         exchange_currency_code as currency_code,
-        is_cancelled,
         current_timestamp() as last_updated,
         '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id
         from {{i}}

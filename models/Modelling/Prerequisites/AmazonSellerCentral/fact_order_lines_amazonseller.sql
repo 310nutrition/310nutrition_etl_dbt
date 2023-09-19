@@ -9,9 +9,8 @@ currency,
 exchange_currency_code,
 exchange_currency_rate,
 date(purchase_date) as date,
-cast(null as string) as subscription_id,
-'Order' as transaction_type,
-case when lower(order_status) = 'cancelled' or lower(item_status) = 'cancelled' then true else false end as is_cancelled,
+case when lower(promotion_ids) like '%subscribe%' or lower(promotion_ids) like '%recurring%' then b.buyeremail else null end as subscription_id,
+case when lower(order_status) = 'cancelled' or lower(item_status) = 'cancelled' then 'Cancelled' else 'Order' end as transaction_type,
 cast(null as string) as reason,
 b.buyeremail as customer_id,
 nullif(address_type,'') ship_address_type,
@@ -64,7 +63,7 @@ from (
     ) main 
 left join (select distinct amazonorderid, buyeremail from {{ ref('ListOrder') }}) b
 on main.amazon_order_id = b.amazonorderid
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
 
 union all
 
@@ -81,7 +80,6 @@ exchange_currency_rate,
 date,
 subscription_id,
 'Return' as transaction_type,  
-is_cancelled,
 return_reason as reason,
 email as customer_id,
 nullif(address_type,'') ship_address_type,
@@ -122,7 +120,6 @@ from (
     date(return_date) as date,
     reason as return_reason,
     cast(null as string) as subscription_id, 
-    false as is_cancelled,
     sum(ret.quantity) as quantity,
     sum(((ifnull(item_price,0) + ifnull(item_tax,0))/nullif(ord.quantity,0)) * ret.quantity) as total_price,
     cast(null as numeric) as subtotal_price, 
@@ -139,7 +136,7 @@ from (
         where item_status != 'Cancelled'
         group by 1,2,3,4,5,6) ord
     on ret.order_id = ord.amazon_order_id and ret.sku = ord.sku
-    group by 1,2,3,4,5,6,7,8,9,10,11,12,13
+    group by 1,2,3,4,5,6,7,8,9,10,11,12
     
     UNION ALL
 
@@ -156,7 +153,6 @@ from (
     date(Return_request_date) as date,
     Return_Reason as return_reason,
     cast(null as string) as subscription_id,
-    false as is_cancelled,
     sum(Return_quantity) as quantity,
     sum(Refunded_Amount) as total_price,
     cast(null as numeric) as subtotal_price, 
@@ -173,7 +169,7 @@ from (
         group by 1,2,3
         ) ord
     on a.order_id = ord.amazon_order_id and a.Merchant_SKU = ord.sku
-    group by 1,2,3,4,5,6,7,8,9,10,11,12,13
+    group by 1,2,3,4,5,6,7,8,9,10,11,12
     ) rr 
 left join
         (select 

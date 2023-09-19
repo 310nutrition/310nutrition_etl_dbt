@@ -36,6 +36,7 @@
     created_at,
     next_charge_scheduled_at,
     order_interval_frequency,
+    external_product_id,
     --order_day_of_month,
     order_interval_unit,
     status,
