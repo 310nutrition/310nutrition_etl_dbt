@@ -24,4 +24,4 @@ cancelled_at,
 presentment_currency,
 cancellation_reason_comments,
 _daton_batch_runtime 
-from {{ ref('RechargeSubscriptions') }}
+from {{ ref('RechargeSubscriptions') }} 

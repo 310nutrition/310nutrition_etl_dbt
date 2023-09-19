@@ -1,14 +1,16 @@
 select
 email,
-order_id,
+c.order_id,
 b.customer_id,
 {% if var('ga_flag') %}
 case when g.subscription_id is not null then 'Subscriber' else 'Non-Subscriber' end as customer_type, 
 {% endif %} 
 date,
 acquisition_date,
-substr(cast(acquisition_date as STRING),1,7) as acquisition_month,
-substr(cast(date as STRING),1,7) as order_month,
+--substr(cast(acquisition_date as STRING),1,7) as acquisition_month,
+--substr(cast(date as STRING),1,7) as order_month,
+date_trunc(acquisition_date,month) as acquisition_month, --added by akash because string date was throwing error in tableau
+date_trunc(date,month) as order_month, --added by akash because string date was throwing error in tableau
 last_order_date,
 is_cancelled,
 brand_name,

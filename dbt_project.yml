@@ -25,6 +25,119 @@ vars:
   # In case the monthly sales target sheet for COGs is in scope, the following flag needs to be turned on
   sales_target_gs_flag : False
 
+  # Shopify Tables Flags
+  ShopifyAbandonedCheckouts: False
+  ShopifyBalanceTransactions: False
+  ShopifyCarrierServices: False
+  ShopifyCollects: False
+  ShopifyCountries: False
+  ShopifyCustomCollections: False
+  ShopifyCustomerAddress: True
+  ShopifyCustomers: True
+  ShopifyDisputes: False
+  ShopifyEvents: False
+  ShopifyFulfillmentEvents: False
+  ShopifyFulfillmentOrders: False
+  ShopifyGiftCards: False
+  ShopifyInventoryItems: False
+  ShopifyInventoryLevels: True
+  ShopifyLocations: False
+  ShopifyOrders: True
+  ShopifyOrdersAddresses: True
+  ShopifyOrdersCustomer: True
+  ShopifyOrdersDiscountAllocations: True
+  ShopifyOrdersDiscountApplications: True
+  ShopifyOrdersFulfillments: True
+  ShopifyOrdersLineItems: True
+  ShopifyOrdersLineItemsTaxLines: True
+  ShopifyOrdersShippingLines: True
+  ShopifyPayouts: False
+  ShopifyPolicies: False
+  ShopifyPriceRules: False
+  ShopifyProductMetafields: False
+  ShopifyProducts: True
+  ShopifyRefundLineItemsTax: True
+  ShopifyRefundsLineItems: True
+  ShopifyRefundsRefundLineItems: True
+  ShopifyRefundsTransactions: True
+  ShopifyShop: False
+  ShopifySmartCollections: False
+  ShopifyTenderTransactions: False
+  ShopifyTransactions: True
+
+  #Recharge Table Flags
+  RechargeCharges : True
+  RechargeCustomers : True
+  RechargeDiscounts : True
+  RechargeOnetimes : True
+  RechargeAddress : True
+  RechargeProducts : True
+  RechargeCollections : True
+  RechargeOrderLineItems : True
+  RechargeOrderLineItemsProperties : True
+  RechargeSubscriptions : True
+
+  #Google Analytics Table Flags
+  GoogleAnalyticsEvents : True
+  GoogleAnalyticsEventsEventParams : True
+
+  #Google Ads Table Flags
+  GoogleAdsShoppingPerformanceView : True
+  GoogleAdsCampaign : True
+
+  #Facebook Tables Flags
+  FacebookAdinsights: True
+  FacebookAdinsightsActionValues: True
+  FacebookAdinsightsAction : True
+  FacebookAdinsightsConversions: False
+  FacebookAdinsightsConversionValues: False
+  FacebookAdsByCountry: False
+  FacebookAdsByProductId: False
+  FacebookAdsByRegion: False
+  FacebookAdsByGender: False
+  FacebookAdsByGenderAge: False
+  FacebookAdsByDevicePlatform: False
+  FacebookAdsByPublisherPlatform: False
+  FacebookAdsByPlatformPosition: False
+  FacebookCampaigns: False
+  FacebookAdcreatives: False
+
+  #BingAds Table Flags
+  BingAccountPerformanceReport : False
+  BingAdExtensionByKeywordReport : False
+  BingAdExtensionDetailReport : False
+  BingAdPerformanceReport : True
+  BingAudiencePerformanceReport : False
+  BingCampaignPerformanceReport : False
+  BingConversionPerformanceReport : False
+  BingGoalsAndFunnelsReport : False
+  BingKeywordPerformanceReport : False
+  BingSearchQueryPerformanceReport: True
+
+  #AmazonSellerCentral Tables Flags
+  AllListingsreport: True
+  CatalogItems: True
+  FBAAmazonFulfilledShipmentsReport: True
+  FBAManageInventory: True
+  FBAManageInventoryHealthReport: True
+  FBAReturnsReport: True
+  FlatFileAllOrdersReportByLastUpdate: True
+  FlatFileReturnsReportByReturnDate: True
+  InventoryLedgerDetailedReport: True
+  ListOrder: True
+  ListFinancialEventsOrderFees: True
+  ListFinancialEventsServiceFees: True
+  ListFinancialEventsOrderPromotions: True
+  ListFinancialEventsOrderRevenue: True
+  ListFinancialEventsOrderTaxes: True
+  ListFinancialEventsRefundFees: True
+  ListFinancialEventsRefundPromotions: True
+  ListFinancialEventsRefundRevenue: True
+  ListFinancialEventsRefundTaxes: True
+  SalesAndTrafficReportByChildASIN: True
+  ListingOffersForASIN: False 
+
+
   currency_conversion_flag: True
   get_brandname_from_tablename_flag: False
   # if get_brandname_from_tablename_flag = True, position of brand name in the daton integration name
@@ -72,12 +185,58 @@ vars:
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_SubscribedToList":-7,
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Unsubscribed":-7,
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_UnsubscribedFromList":-7,
-"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_orders":-8,
-"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_orders":-8,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_customers":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_customers":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_customer_address":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_customer_address":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_fulfillment_events":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_fulfillment_events":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_fulfillment_orders":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_fulfillment_orders":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_inventory_items":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_inventory_items":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_inventory_levels":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_inventory_levels":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_products":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_products":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_refunds":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_refunds":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_orders":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_orders":-7,
+
 "nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_ad_performance_report" : -7,
 "nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_ad_performance_report" : -7,
 "nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_search_query_performance_report" : -7,
-"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_search_query_performance_report" : -7
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_search_query_performance_report" : -7,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Recharge_Orders" : 330,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Recharge_Orders" : 330,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Recharge_Subscriptions" : 330,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Recharge_Subscriptions" : 330,
+
+"edm-saras.EDM_Daton.Brand_US_GoogleAdsBQ_shopping_performance_view" : 6,
+
+"Facebook.Ads.Brand_UK_Facebook_Adinsights":-7,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_ad_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_ad_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_search_query_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_search_query_performance_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_campaign_performance_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_conversion_performance_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_goals_and_funnels_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_keyword_performance_report" : -7,
+"Bing.Ads.Brand_UK_BingAds_180494538_ad_performance_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_search_query_performance_report" : -7,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_SalesAndTrafficReportByChildASIN":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SellerCentral_SalesAndTrafficReportByChildASIN":-4,
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FlatFileAllOrdersReportbyLastUpdate":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FlatFileReturnsReportbyReturnDate":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FBAReturnsReport":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_ListOrder":-8
+
 }
   timezone_conversion_hours: -7
 
@@ -122,6 +281,8 @@ models:
         +schema: stg_tiktok_ads
       FlipkartSellerHub:
         +schema: stg_flipkart_sellerhub
+      GA4:
+        +schema: stg_ga4
       Klaviyo:
         +schema: stg_klaviyo
       PinterestAds:
