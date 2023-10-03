@@ -27,9 +27,9 @@ case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item
 case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item_discount else 0 end as item_discount,
 case when a.transaction_type='Return' then item_subtotal_price else 0 end AS item_refund_amount,
 case when c.platform_name like 'Shopify' then
-    case when d.subscription_id is not null then 'True' ELSE 'False' END 
+    case when d.subscription_id is not null then True ELSE False END 
     else
-    case when a.subscription_id is not null then 'True' ELSE 'False' END
+    case when a.subscription_id is not null then True ELSE False END
     end as is_subscription,
 case when c.platform_name like 'Shopify' then d.subscription_id else a.subscription_id end as subscription_id,
 d.external_product_id as subscription_product_id,

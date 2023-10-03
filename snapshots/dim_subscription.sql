@@ -5,7 +5,7 @@
       target_schema='edm_modelling_snapshot',
       unique_key='subscription_key',
       strategy='check',
-      check_cols='all',
+      check_cols=['cancelled_at'],
     )
 }}
 

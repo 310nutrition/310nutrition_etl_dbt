@@ -3,6 +3,8 @@
 -- depends_on: {{ ref('ProductDetails') }}
 {% endif %}
 
+SELECT * {{exclude()}} (row_num) from
+(
 select prod.*,
 {% if var('product_details_gs_flag') %}
 description, 
@@ -33,7 +35,8 @@ cast(null as string) as color,
 '' as seller,
 cast(null as string) as size,
 cast(null as string) product_category,
-_daton_batch_runtime
+_daton_batch_runtime,
+row_number() over(partition by line_items_product_id, line_items_sku order by _daton_batch_runtime desc) as row_num
 from {{ ref('ShopifyOrdersLineItems') }}) prod
 {% if var('product_details_gs_flag') %}
 left join (
@@ -42,6 +45,8 @@ left join (
   where lower(platform_name) = 'shopify') prod_gs
 on prod.sku = prod_gs.sku
 {% endif %}
+)
+where row_num = 1
 
 
 
