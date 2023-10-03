@@ -35,17 +35,18 @@ select *, row_number() over(partition by product_id,sku,platform_name, start_dat
         seller,
         size,
         product_category,
-        product_status,
-        buybox_landed_price,
-        buybox_listing_price,
-        buybox_seller_id,
+        --product_status,
+        --buybox_landed_price,
+        --buybox_listing_price,
+        --buybox_seller_id,
         description, 
         category, 
         sub_category, 
         mrp, 
         cogs, 
         start_date, 
-        end_date
+        end_date,
+        _daton_batch_runtime
 	      from {{i}}
         
     {% if not loop.last %} union all {% endif %}

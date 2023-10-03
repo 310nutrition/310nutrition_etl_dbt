@@ -28,6 +28,9 @@
     select 
     distinct
     {{ dbt_utils.surrogate_key(['subscription_id','sku']) }} AS subscription_key,
+    brand,
+    platform_name,
+    store_name,
     order_channel,
     subscription_id,
     customer_id,
@@ -36,7 +39,9 @@
     created_at,
     next_charge_scheduled_at,
     order_interval_frequency,
-    order_day_of_month,
+    external_product_id,
+    sku,
+    --order_day_of_month,
     order_interval_unit,
     status,
     updated_at,
@@ -44,7 +49,7 @@
     cancellation_reason,
     cancellation_reason_comments,
     presentment_currency,
-    row_number() over(partition by external_product_id,sku,platform_name order by _daton_batch_runtime desc) row_num
+    row_number() over(partition by subscription_id,external_product_id,sku,platform_name order by _daton_batch_runtime desc) row_num
     from {{i}}) where row_num = 1
     
     {% if not loop.last %} union all {% endif %}

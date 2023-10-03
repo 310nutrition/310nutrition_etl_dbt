@@ -41,6 +41,11 @@ and lower(table_name) not like 'fact_order_lines_unicom%'
     {{ dbt_utils.surrogate_key(['ship_address_type','ship_address_1','ship_address_2','ship_city','ship_district','ship_state','ship_country','ship_postal_code']) }} AS shipping_address_key,
     {{ dbt_utils.surrogate_key(['bill_address_type','bill_address_1','bill_address_2','bill_city','bill_district','bill_state','bill_country','bill_postal_code']) }} AS billing_address_key,
     date,
+    customer_id,
+    subscription_id,
+    order_id,
+    case when product_id is null then '0' else product_id end as product_id,
+    sku,
     transaction_type,
     reason,
     quantity,
@@ -53,7 +58,9 @@ and lower(table_name) not like 'fact_order_lines_unicom%'
     round((item_discount/exchange_currency_rate),2) as item_discount,
     round((shipping_discount/exchange_currency_rate),2) as item_shipping_discount,
     exchange_currency_code as currency_code,
-    is_cancelled,
+    ship_city,
+    ship_state,
+    ship_country,
     current_timestamp() as last_updated,
     '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id
     from {{i}}

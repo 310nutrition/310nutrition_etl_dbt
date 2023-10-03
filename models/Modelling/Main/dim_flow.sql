@@ -1,3 +1,5 @@
+{{ config( enabled = False ) }}
+
 -- Dependencies generated through pipeline script.
 -- depends_on: {{ ref('dim_flow_klaviyo') }}
 

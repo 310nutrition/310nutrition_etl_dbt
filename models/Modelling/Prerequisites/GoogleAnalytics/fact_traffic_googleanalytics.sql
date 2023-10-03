@@ -1,13 +1,14 @@
 select
 brand,
-store_name,
-platform_name,
+'United States' as store_name,
+'Shopify' as platform_name,
 product_id,
 sku,
 event_name,
 source,
 medium,
 campaign,
+transaction_id,
 keyword,
 content,
 landing_page_path,
@@ -38,6 +39,7 @@ from (
     source,
     medium,
     name as campaign,
+    transaction_id,
     '' as keyword,
     '' as  content,
     string_value as landing_page_path,
@@ -63,4 +65,4 @@ from (
     from {{ref('GoogleAnalyticsEventsEventParams')}} a
     where key = 'page_location'
     ) 
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16

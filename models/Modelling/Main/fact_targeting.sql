@@ -1,8 +1,5 @@
 -- Dependencies generated through pipeline script.
--- depends_on: {{ ref('fact_targeting_amazonsd') }}
--- depends_on: {{ ref('fact_targeting_amazonsb') }}
--- depends_on: {{ ref('fact_targeting_amazonsbv') }}
--- depends_on: {{ ref('fact_targeting_amazonsp') }}
+
 -- depends_on: {{ ref('fact_targeting_bingads') }}
 
 {% if is_incremental() %}

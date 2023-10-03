@@ -9,8 +9,7 @@ select all_ord.*, lst_ord.buyeremail as customer_id
     exchange_currency_code,
     exchange_currency_rate,
     date(purchase_date) as date,
-    'Order' as transaction_type,
-    case when lower(order_status) = 'cancelled' then true else false end as is_cancelled,
+    case when lower(order_status) = 'cancelled' then 'Cancelled' else 'Order' end as transaction_type,
     sum(quantity) quantity,
     sum(ifnull(item_price,0) + ifnull(item_tax,0) + ifnull(shipping_tax,0) + ifnull(gift_wrap_tax,0)) total_price,
     sum(item_price) subtotal_price,
@@ -21,7 +20,7 @@ select all_ord.*, lst_ord.buyeremail as customer_id
     sum(ship_promotion_discount) shipping_discount
     from {{ ref('FlatFileAllOrdersReportByLastUpdate') }}
     where sales_channel <> 'Non-Amazon' and item_status != 'Cancelled'
-    group by 1,2,3,4,5,6,7,8,9,10
+    group by 1,2,3,4,5,6,7,8,9
     ) all_ord 
   left join (select distinct amazonorderid, buyeremail from {{ ref('ListOrder') }}) lst_ord
   on all_ord.order_id = lst_ord.amazonorderid
@@ -40,7 +39,6 @@ from (
     ord.exchange_currency_rate,
     date(return_date) as date,
     'Return' as transaction_type,  
-    false as is_cancelled,
     coalesce(sum(fba_rtrn.quantity),cast(null as numeric)) quantity,
     coalesce(sum((ifnull(item_price,0) + ifnull(item_tax,0))/nullif(ord.quantity,0)*fba_rtrn.quantity),cast(null as numeric)) total_price,
     cast(null as numeric) as subtotal_price,
@@ -57,7 +55,7 @@ from (
         where item_status != 'Cancelled'
         group by 1,2,3,4) ord
     on fba_rtrn.order_id = ord.amazon_order_id
-    group by 1,2,3,4,5,6,7,8,9,10
+    group by 1,2,3,4,5,6,7,8,9
     
     UNION ALL
 
@@ -70,8 +68,7 @@ from (
     exchange_currency_code,
     exchange_currency_rate,
     date(Return_request_date) as date,
-    'Return' as transaction_type,  
-    false as is_cancelled,
+    'Return' as transaction_type,
     coalesce(sum(Return_quantity),cast(null as numeric)) quantity,
     coalesce(sum(Refunded_Amount),cast(null as numeric)) total_price,
     cast(null as numeric) as subtotal_price,
@@ -81,7 +78,7 @@ from (
     cast(null as numeric) as order_discount,
     cast(null as numeric) as shipping_discount
     from {{ref('FlatFileReturnsReportByReturnDate')}}
-    group by 1,2,3,4,5,6,7,8,9,10 
+    group by 1,2,3,4,5,6,7,8,9
     ) rtrns 
 left join
 (select distinct amazonorderid, buyeremail as email from {{ ref('ListOrder') }}) list_ord

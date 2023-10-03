@@ -1,12 +1,18 @@
-Select 
+select 
 brand_name,
+portfolio_id,
 portfolio_name,
 g.ad_channel,
 e.campaign_type,
 c.platform_name,
 store_name,
 date,
+e.campaign_id,
 campaign_name,
+f.adgroup_id,
+f.adgroup_name,
+g.ad_id,
+g.ad_name,
 e.status as campaign_status,
 e.budget as campaign_budget,
 e.budget_type as campaign_budget_type,
@@ -34,4 +40,4 @@ left join {{ ref('dim_adgroup')}} f
 on a.adgroup_key = f.adgroup_key
 left join {{ ref('dim_ads')}} g
 on a.ad_key = g.ad_key
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20

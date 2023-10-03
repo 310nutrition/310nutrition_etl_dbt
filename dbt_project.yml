@@ -11,25 +11,162 @@ profile: "edm_data_transformation"
 vars:
   # raw_database: "EDM"
   # raw_schema: "EDM"
-  raw_database: "edm-saras"
-  raw_schema: "EDM_Daton"
-  mdl_database: "edm-saras"
-  mdl_schema: "edm_mdl_prerequisites"
+  raw_database: "nutritiondatondw"
+  raw_schema: "310nutrition_rawdata"
+  raw_schema_ga: "analytics_357547543"
+  mdl_database: "nutritiondatondw"
+  mdl_schema: "dbt_3nutrition_mdl_prerequisites"
 
   # Set the models to False in case you dont want them to be materialised
 
   # In case the product details sheet for COGs is in scope, the following flag needs to be turned on
-  product_details_gs_flag : False
+  product_details_gs_flag : True
 
   # In case the monthly sales target sheet for COGs is in scope, the following flag needs to be turned on
   sales_target_gs_flag : False
+
+  # Shopify Tables Flags
+  ShopifyAbandonedCheckouts: False
+  ShopifyBalanceTransactions: False
+  ShopifyCarrierServices: False
+  ShopifyCollects: False
+  ShopifyCountries: False
+  ShopifyCustomCollections: False
+  ShopifyCustomerAddress: True
+  ShopifyCustomers: True
+  ShopifyDisputes: False
+  ShopifyEvents: False
+  ShopifyFulfillmentEvents: False
+  ShopifyFulfillmentOrders: False
+  ShopifyGiftCards: False
+  ShopifyInventoryItems: False
+  ShopifyInventoryLevels: True
+  ShopifyLocations: False
+  ShopifyOrders: True
+  ShopifyOrdersAddresses: True
+  ShopifyOrdersCustomer: True
+  ShopifyOrdersDiscountAllocations: True
+  ShopifyOrdersDiscountApplications: True
+  ShopifyOrdersFulfillments: True
+  ShopifyOrdersLineItems: True
+  ShopifyOrdersLineItemsTaxLines: True
+  ShopifyOrdersShippingLines: True
+  ShopifyPayouts: False
+  ShopifyPolicies: False
+  ShopifyPriceRules: False
+  ShopifyProductMetafields: False
+  ShopifyProducts: True
+  ShopifyRefundLineItemsTax: True
+  ShopifyRefundsLineItems: True
+  ShopifyRefundsRefundLineItems: True
+  ShopifyRefundsTransactions: True
+  ShopifyShop: False
+  ShopifySmartCollections: False
+  ShopifyTenderTransactions: False
+  ShopifyTransactions: True
+
+  #Recharge Table Flags
+  RechargeCharges : True
+  RechargeCustomers : True
+  RechargeDiscounts : True
+  RechargeOnetimes : True
+  RechargeAddress : True
+  RechargeProducts : True
+  RechargeCollections : True
+  RechargeOrderLineItems : True
+  RechargeOrderLineItemsProperties : True
+  RechargeSubscriptions : True
+
+  #Google Analytics Table Flags
+  GoogleAnalyticsEvents : True
+  GoogleAnalyticsEventsEventParams : True
+
+  #Google Ads Table Flags
+  GoogleAdsShoppingPerformanceView : True
+  GoogleAdsCampaign : True
+
+  #Facebook Tables Flags
+  FacebookAdinsights: True
+  FacebookAdinsightsActionValues: True
+  FacebookAdinsightsAction : True
+  FacebookAdinsightsConversions: False
+  FacebookAdinsightsConversionValues: False
+  FacebookAdsByCountry: False
+  FacebookAdsByProductId: False
+  FacebookAdsByRegion: False
+  FacebookAdsByGender: False
+  FacebookAdsByGenderAge: False
+  FacebookAdsByDevicePlatform: False
+  FacebookAdsByPublisherPlatform: False
+  FacebookAdsByPlatformPosition: False
+  FacebookCampaigns: False
+  FacebookAdcreatives: False
+
+  #BingAds Table Flags
+  BingAccountPerformanceReport : False
+  BingAdExtensionByKeywordReport : False
+  BingAdExtensionDetailReport : False
+  BingAdPerformanceReport : True
+  BingAudiencePerformanceReport : False
+  BingCampaignPerformanceReport : False
+  BingConversionPerformanceReport : False
+  BingGoalsAndFunnelsReport : False
+  BingKeywordPerformanceReport : False
+  BingSearchQueryPerformanceReport: True
+
+  #AmazonSellerCentral Tables Flags
+  AllListingsreport: True
+  CatalogItems: True
+  FBAAmazonFulfilledShipmentsReport: True
+  FBAManageInventory: True
+  FBAManageInventoryHealthReport: True
+  FBAReturnsReport: True
+  FlatFileAllOrdersReportByLastUpdate: True
+  FlatFileReturnsReportByReturnDate: True
+  InventoryLedgerDetailedReport: True
+  ListOrder: True
+  ListFinancialEventsOrderFees: True
+  ListFinancialEventsServiceFees: True
+  ListFinancialEventsOrderPromotions: True
+  ListFinancialEventsOrderRevenue: True
+  ListFinancialEventsOrderTaxes: True
+  ListFinancialEventsRefundFees: True
+  ListFinancialEventsRefundPromotions: True
+  ListFinancialEventsRefundRevenue: True
+  ListFinancialEventsRefundTaxes: True
+  SalesAndTrafficReportByChildASIN: True
+  ListingOffersForASIN: False 
+
+  #AmazonAds
+  SBAdGroupsReport: True
+  SBAdGroupsVideoReport: True
+  SBCampaign: True
+  SBPlacementCampaignsReport: True
+  SBPortfolio: True
+  SBSearchTermKeywordsReport: True
+  SBSearchTermKeywordsVideoReport: True
+  SBTargetReport: True
+  SBTargetVideoReport: True
+  SDProductTargetingReport: True
+  SDCampaign: True
+  SDPortfolio: True
+  SDProductAdsReport: True
+  SPSearchTermKeywordReport: True
+  SPCampaign: True
+  SPPlacementCampaignsReport: True
+  SPPortfolio: True
+  SPProductAdsReport: True
+  SBUnifiedAdGroupsReport: True
+  SBUnifiedPlacementCampaignsReport: True
+  SBUnifiedSearchTermKeywordsReport: True
+  SBUnifiedTargetReport: True
 
   currency_conversion_flag: True
   get_brandname_from_tablename_flag: False
   # if get_brandname_from_tablename_flag = True, position of brand name in the daton integration name
   brandname_position_in_tablename: 0
   # if get_brandname_from_tablename_flag = False, provide the brand name to be populated in the table
-  default_brandname: "Default"
+  default_brandname: "310 Nutrition"
 
   get_storename_from_tablename_flag: True    
   # if get_storename_from_tablename_flag = True, position of store name in the daton integration name
@@ -38,19 +175,112 @@ vars:
   default_storename: "US"
 
   # Set this flag to true if recharge is in the scope
-  recharge_flag: False
+  recharge_flag: True
 
   # Set this flag to true if upscribe is in the scope
   upscribe_flag: False
 
   # Set this flag to true if google analytics 4 is in the scope
-  ga_flag: False
+  ga_flag: True
 
   # Google Analytics 4 Account Platform Name Position
   platform_name_position: 2
 
-  timezone_conversion_flag: False
-  #timezone_conversion_hours: "-7"
+  timezone_conversion_flag: True
+  raw_table_timezone_offset_hours: {
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_BouncedEmail":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Campaigns":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_ClickedEmail":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_ConsentedToRecieveSMS":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_DroppedEmail":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_FailedToDeliverSMS":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_FlowActions":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_FlowMessages":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Flows":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Lists":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_MarkedEmailAsSpam":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Metrics":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_OpenedEmail":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_OpenedPush":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_RecievedSMS":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Segments":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_SentSMS":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_SubscribedToList":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Unsubscribed":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_UnsubscribedFromList":-7,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_customers":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_customers":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_customer_address":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_customer_address":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_fulfillment_events":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_fulfillment_events":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_fulfillment_orders":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_fulfillment_orders":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_inventory_items":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_inventory_items":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_inventory_levels":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_inventory_levels":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_products":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_products":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_refunds":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_refunds":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Shopify_orders":-7,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Shopify_orders":-7,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_ad_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_ad_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_search_query_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_search_query_performance_report" : -7,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Recharge_Orders" : 330,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Recharge_Orders" : 330,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_Recharge_Subscriptions" : 330,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_Recharge_Subscriptions" : 330,
+
+"edm-saras.EDM_Daton.Brand_US_GoogleAdsBQ_shopping_performance_view" : 6,
+
+"Facebook.Ads.Brand_UK_Facebook_Adinsights":-7,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_ad_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_ad_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_140098122_search_query_performance_report" : -7,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_BingAds_2235132_search_query_performance_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_campaign_performance_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_conversion_performance_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_goals_and_funnels_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_keyword_performance_report" : -7,
+"Bing.Ads.Brand_UK_BingAds_180494538_ad_performance_report" : -7,
+"Bing.Ads.Brand_US_BingAds_180494538_search_query_performance_report" : -7,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_SalesAndTrafficReportByChildASIN":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SellerCentral_SalesAndTrafficReportByChildASIN":-4,
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FlatFileAllOrdersReportbyLastUpdate":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FlatFileReturnsReportbyReturnDate":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FBAReturnsReport":-8,
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_ListOrder":-8,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_PlacementCampaignsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_PlacementCampaignsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SP_1545870897036067_SponsoredProducts_PlacementCampaignsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SP_1545870897036067_SponsoredProducts_PlacementCampaignsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_AdGroupsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_AdGroupsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_AdGroupsVideoReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_AdGroupsVideoReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_SearchTermKeywordsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_SearchTermKeywordsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_SearchTermKeywordsVideoReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_SearchTermKeywordsVideoReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SP_1545870897036067_SponsoredProducts_SearchTermKeywordReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SP_3408225061363839_SponsoredProducts_SearchTermKeywordReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SD_1545870897036067_SponsoredDisplay_ProductAdsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SD_3408225061363839_SponsoredDisplay_ProductAdsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SP_1545870897036067_SponsoredProducts_ProductAdsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SP_3408225061363839_SponsoredProducts_ProductAdsReport":0
+
+}
+  timezone_conversion_hours: -7
 
   # Variables used for dbt-tests
   'dbt_date:time_zone': 'America/Los_Angeles'
@@ -93,6 +323,8 @@ models:
         +schema: stg_tiktok_ads
       FlipkartSellerHub:
         +schema: stg_flipkart_sellerhub
+      GA4:
+        +schema: stg_ga4
       Klaviyo:
         +schema: stg_klaviyo
       PinterestAds:

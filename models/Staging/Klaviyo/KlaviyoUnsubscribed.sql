@@ -66,16 +66,16 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
         ev.event_id,
         bounce_info.add_exclusion,
         bounce_info.is_autoresponder,
-        bounce_info.action_id,
-        ev.variation,
-        ev.experiment,
-        ev.cohort_variation_send_cohort,
-        attribution.attributed_event_id,
-        attribution.message as attributed_msg,
-        attribution.flow as attributed_flow,
-        attribution.group_ids as attributed_group_ids,
-        attribution.variation as attribution_variation,
-        attribution.experiment as attribution_experiment,
+        --bounce_info.action_id,
+        --ev.variation,
+        --ev.experiment,
+        --ev.cohort_variation_send_cohort,
+        --attribution.attributed_event_id,
+        --attribution.message as attributed_msg,
+        --attribution.flow as attributed_flow,
+        --attribution.group_ids as attributed_group_ids,
+        --attribution.variation as attribution_variation,
+        --attribution.experiment as attribution_experiment,
         {% if var('timezone_conversion_flag') %}
            datetime(DATETIME_ADD(cast(datetime as timestamp), INTERVAL {{hr}} HOUR )) as datetime,
         {% else %}
@@ -105,7 +105,7 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
         LEFT JOIN UNNEST (att.event_properties) AS ev
         LEFT JOIN UNNEST (ev.extra) AS extra
         LEFT JOIN UNNEST (extra.bounce_delivery_info) as bounce_info
-        LEFT JOIN UNNEST (ev.attribution) as attribution
+        --LEFT JOIN UNNEST (ev.attribution) as attribution
         LEFT JOIN UNNEST (links) as links
     {% if is_incremental() %}
             {# /* -- this filter will only be applied on an incremental run */ #}

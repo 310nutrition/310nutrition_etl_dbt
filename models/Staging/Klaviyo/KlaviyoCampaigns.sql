@@ -74,8 +74,8 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
         _daton_user_id,	   	   	
         _daton_batch_runtime,	   	   	
         _daton_batch_id,  	   	
-        status_id_nu,	   	   	
-        num_recipients_nu,
+        --status_id_nu,	   	   	
+        --num_recipients_nu,
         unix_micros(current_timestamp()) as _edm_runtime,
         ROW_NUMBER() OVER (PARTITION BY id ORDER BY _daton_batch_runtime DESC) AS rnk
         FROM {{i}} a

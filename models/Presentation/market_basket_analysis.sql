@@ -6,7 +6,7 @@ SELECT
     e.platform_name, 
     e.store_name,
     product_name,
-    regexp_replace(sku, '[^0-9]+', '') as sku
+    regexp_replace(f.sku, '[^0-9]+', '') as sku
     from {{ ref('fact_order_lines')}} a
     left join {{ ref('dim_orders')}} c
     on a.order_key = c.order_key

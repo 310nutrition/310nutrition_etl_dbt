@@ -11,8 +11,8 @@ sub_category,
 cast(mrp as numeric) mrp, 
 cast(cogs as numeric) cogs, 
 currency_code,
-cast(start_date as date) date, 
-cast(end_date as  date) date
+cast(start_date as date) start_date, 
+cast(end_date as  date) end_date
 {% else %}
 cast(null as string) as description, 
 cast(null as string) as category, 
@@ -26,15 +26,15 @@ cast(null as date) as end_date
 from (
 select distinct
 'Shopify' as platform_name,
-coalesce(cast(id as string),'') product_id,
-coalesce(variants_sku,'') sku,
-coalesce(title,'') product_name, 
+coalesce(cast(line_items_product_id as string),'') product_id,
+coalesce(line_items_sku,'') sku,
+coalesce(line_items_name,'') product_name, 
 cast(null as string) as color, 
-coalesce(vendor,'') seller,
+'' as seller,
 cast(null as string) as size,
 cast(null as string) product_category,
 _daton_batch_runtime
-from {{ ref('ShopifyProducts') }}) prod
+from {{ ref('ShopifyOrdersLineItems') }}) prod
 {% if var('product_details_gs_flag') %}
 left join (
   select sku, description,	category, sub_category, mrp, cogs, currency_code, start_date, end_date 
