@@ -10,6 +10,11 @@ a.transaction_type as order_type,
 a.product_id,
 a.sku,
 i.product_name,
+product_category,
+mrp,
+category,
+sub_category, 
+cogs,
 quantity,
 currency_code as currency,
 case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item_total_price else 0 end as item_total_price,
@@ -41,7 +46,7 @@ left join {{ref('dim_orders')}} f on a.order_key = f.order_key
 left join (select * from {{ref('dim_subscription')}} where effective_end_date = '9999-12-31') d
 on a.subscription_key = d.subscription_key
 left join {{ref('dim_brand')}} e on a.brand_key = e.brand_key
-left join (select product_key, product_id, product_name, sku from {{ref('dim_product')}} where status = 'Active') i
+left join (select product_key, product_id, product_name, sku,product_category,mrp,category,sub_category, cogs from {{ref('dim_product')}} where status = 'Active') i
 on a.product_key = i.product_key
 ),
 
