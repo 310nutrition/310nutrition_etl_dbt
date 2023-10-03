@@ -50,7 +50,7 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
     From (
         select
         '{{brand}}' as brand,
-        case when lower(campaign.name) like '%canada%' then 'CA' else 'US' end as store,
+        case when lower(campaign_name) like '%canada%' then 'CA' else 'US' end as store,
         {% if var('currency_conversion_flag') %}
             case when c.value is null then 1 else c.value end as exchange_currency_rate,
             case when c.from_currency_code is null then a.currency_code else c.from_currency_code end as exchange_currency_code,

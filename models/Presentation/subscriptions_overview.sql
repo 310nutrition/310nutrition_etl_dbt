@@ -1,12 +1,12 @@
 select 
 distinct
-coalesce(b.brand_name,'')brand_name,
-coalesce(c.platform_name,'')platform_name,
+coalesce(b.brand_name,e.brand)brand_name,
+coalesce(c.platform_name,e.platform_name)platform_name,
 e.order_channel,
-coalesce(c.store_name,'')store_name,
-coalesce(d.product_id,'') product_id,
+coalesce(c.store_name,e.store_name)store_name,
+coalesce(d.product_id,e.external_product_id) product_id,
 coalesce(d.product_name,'')product_name,
-coalesce(d.sku,'')sku,
+coalesce(d.sku,e.sku)sku,
 e.subscription_id,
 e.customer_id,
 utm_source,

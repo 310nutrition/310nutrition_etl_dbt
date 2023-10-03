@@ -11,8 +11,8 @@ sub_category,
 cast(mrp as numeric) mrp, 
 cast(cogs as numeric) cogs, 
 currency_code,
-cast(start_date as date) date, 
-cast(end_date as  date) date
+cast(start_date as date) start_date, 
+cast(end_date as  date) end_date
 {% else %}
 cast(null as string) as description, 
 cast(null as string) as category, 

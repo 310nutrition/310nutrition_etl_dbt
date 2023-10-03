@@ -20,7 +20,7 @@ vars:
   # Set the models to False in case you dont want them to be materialised
 
   # In case the product details sheet for COGs is in scope, the following flag needs to be turned on
-  product_details_gs_flag : False
+  product_details_gs_flag : True
 
   # In case the monthly sales target sheet for COGs is in scope, the following flag needs to be turned on
   sales_target_gs_flag : False
@@ -137,6 +137,29 @@ vars:
   SalesAndTrafficReportByChildASIN: True
   ListingOffersForASIN: False 
 
+  #AmazonAds
+  SBAdGroupsReport: True
+  SBAdGroupsVideoReport: True
+  SBCampaign: True
+  SBPlacementCampaignsReport: True
+  SBPortfolio: True
+  SBSearchTermKeywordsReport: True
+  SBSearchTermKeywordsVideoReport: True
+  SBTargetReport: True
+  SBTargetVideoReport: True
+  SDProductTargetingReport: True
+  SDCampaign: True
+  SDPortfolio: True
+  SDProductAdsReport: True
+  SPSearchTermKeywordReport: True
+  SPCampaign: True
+  SPPlacementCampaignsReport: True
+  SPPortfolio: True
+  SPProductAdsReport: True
+  SBUnifiedAdGroupsReport: True
+  SBUnifiedPlacementCampaignsReport: True
+  SBUnifiedSearchTermKeywordsReport: True
+  SBUnifiedTargetReport: True
 
   currency_conversion_flag: True
   get_brandname_from_tablename_flag: False
@@ -164,7 +187,7 @@ vars:
   platform_name_position: 2
 
   timezone_conversion_flag: True
-  raw_table_timezone_conversion_hours: {
+  raw_table_timezone_offset_hours: {
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_BouncedEmail":-7,
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_Campaigns":-7,
 "nutritiondatondw.310nutrition_rawdata.TTN_US_Klaviyo_ClickedEmail":-7,
@@ -235,7 +258,26 @@ vars:
 "nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FlatFileAllOrdersReportbyLastUpdate":-8,
 "nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FlatFileReturnsReportbyReturnDate":-8,
 "nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_FBAReturnsReport":-8,
-"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_ListOrder":-8
+"nutritiondatondw.310nutrition_rawdata.TTN_NA_SellerCentral_ListOrder":-8,
+
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_PlacementCampaignsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_PlacementCampaignsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SP_1545870897036067_SponsoredProducts_PlacementCampaignsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SP_1545870897036067_SponsoredProducts_PlacementCampaignsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_AdGroupsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_AdGroupsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_AdGroupsVideoReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_AdGroupsVideoReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_SearchTermKeywordsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_SearchTermKeywordsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SB_1545870897036067_SponsoredBrands_SearchTermKeywordsVideoReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SB_3408225061363839_SponsoredBrands_SearchTermKeywordsVideoReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SP_1545870897036067_SponsoredProducts_SearchTermKeywordReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SP_3408225061363839_SponsoredProducts_SearchTermKeywordReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SD_1545870897036067_SponsoredDisplay_ProductAdsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SD_3408225061363839_SponsoredDisplay_ProductAdsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_US_SP_1545870897036067_SponsoredProducts_ProductAdsReport":0,
+"nutritiondatondw.310nutrition_rawdata.TTN_CA_SP_3408225061363839_SponsoredProducts_ProductAdsReport":0
 
 }
   timezone_conversion_hours: -7

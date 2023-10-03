@@ -23,7 +23,7 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
 {% endif %}
 
 {% set table_name_query %}
-{{set_table_name('%facebookads%adinsights')}}    
+{{set_table_name('%facebook%adinsights')}}    
 {% endset %}  
 
 

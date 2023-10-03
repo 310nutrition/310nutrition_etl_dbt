@@ -3,7 +3,10 @@
 -- depends_on: {{ ref('dim_ads_bingads') }}
 -- depends_on: {{ ref('dim_ads_facebookads') }}
 -- depends_on: {{ ref('dim_ads_googleads') }}
-
+-- depends_on: {{ ref('dim_ads_amazonsbv') }}
+-- depends_on: {{ ref('dim_ads_amazonsp') }}
+-- depends_on: {{ ref('dim_ads_amazonsb') }}
+-- depends_on: {{ ref('dim_ads_amazonsd') }}
 
 {% if is_incremental() %}
 {%- set max_loaded_query -%}

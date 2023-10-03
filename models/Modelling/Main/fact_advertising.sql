@@ -3,6 +3,10 @@
 -- depends_on: {{ ref('fact_advertising_bingads') }}
 -- depends_on: {{ ref('fact_advertising_facebookads') }}
 -- depends_on: {{ ref('fact_advertising_googleads') }}
+-- depends_on: {{ ref('fact_advertising_amazonsbv') }}
+-- depends_on: {{ ref('fact_advertising_amazonsd') }}
+-- depends_on: {{ ref('fact_advertising_amazonsp') }}
+-- depends_on: {{ ref('fact_advertising_amazonsb') }}
 
 {% if is_incremental() %}
 {%- set max_loaded_query -%}

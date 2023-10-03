@@ -28,6 +28,9 @@
     select 
     distinct
     {{ dbt_utils.surrogate_key(['subscription_id','sku']) }} AS subscription_key,
+    brand,
+    platform_name,
+    store_name,
     order_channel,
     subscription_id,
     customer_id,
@@ -37,6 +40,7 @@
     next_charge_scheduled_at,
     order_interval_frequency,
     external_product_id,
+    sku,
     --order_day_of_month,
     order_interval_unit,
     status,
