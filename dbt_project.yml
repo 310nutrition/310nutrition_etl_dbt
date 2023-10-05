@@ -66,14 +66,14 @@ vars:
   ShopifyTransactions: True
 
   #Recharge Table Flags
-  RechargeCharges : True
-  RechargeCustomers : True
-  RechargeDiscounts : True
-  RechargeOnetimes : True
-  RechargeAddress : True
-  RechargeProducts : True
-  RechargeCollections : True
-  RechargeOrderLineItems : True
+  RechargeCharges : False
+  RechargeCustomers : False
+  RechargeDiscounts : False
+  RechargeOnetimes : False
+  RechargeAddress : False
+  RechargeProducts : False
+  RechargeCollections : False
+  RechargeOrderLineItems : False
   RechargeOrderLineItemsProperties : True
   RechargeSubscriptions : True
 
@@ -88,7 +88,7 @@ vars:
   #Facebook Tables Flags
   FacebookAdinsights: True
   FacebookAdinsightsActionValues: True
-  FacebookAdinsightsAction : True
+  FacebookAdinsightsAction : False
   FacebookAdinsightsConversions: False
   FacebookAdinsightsConversionValues: False
   FacebookAdsByCountry: False
@@ -145,8 +145,8 @@ vars:
   SBPortfolio: True
   SBSearchTermKeywordsReport: True
   SBSearchTermKeywordsVideoReport: True
-  SBTargetReport: True
-  SBTargetVideoReport: True
+  SBTargetReport:   False
+  SBTargetVideoReport: False
   SDProductTargetingReport: True
   SDCampaign: True
   SDPortfolio: True
@@ -156,12 +156,13 @@ vars:
   SPPlacementCampaignsReport: True
   SPPortfolio: True
   SPProductAdsReport: True
-  SBUnifiedAdGroupsReport: True
-  SBUnifiedPlacementCampaignsReport: True
-  SBUnifiedSearchTermKeywordsReport: True
-  SBUnifiedTargetReport: True
+  SBUnifiedAdGroupsReport: False
+  SBUnifiedPlacementCampaignsReport: False
+  SBUnifiedSearchTermKeywordsReport: False
+  SBUnifiedTargetReport: False
 
   currency_conversion_flag: True
+  ExchangeRates: True
   get_brandname_from_tablename_flag: False
   # if get_brandname_from_tablename_flag = True, position of brand name in the daton integration name
   brandname_position_in_tablename: 0

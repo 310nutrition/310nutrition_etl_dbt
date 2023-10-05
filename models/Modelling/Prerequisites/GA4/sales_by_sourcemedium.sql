@@ -14,9 +14,9 @@ with cte1 as (select
     a.customer_type,
     coalesce(b.Mapped_source,'Unattributed') as Mapped_source,
     case
-        when is_subscription = 'True' and customer_type = 'Returning Customer' then 'Subscription'
+        when is_subscription = True and customer_type = 'Returning Customer' then 'Subscription'
         when customer_type = 'New Customer' then coalesce(b.Mapped_source,'Unattributed')
-        when is_subscription = 'False' and customer_type = 'Returning Customer' then 'Returning'
+        when is_subscription = False and customer_type = 'Returning Customer' then 'Returning'
     end as attribution_type
 from {{ref("orders_table")}} a
 left join {{ref("order_mapping")}} b
