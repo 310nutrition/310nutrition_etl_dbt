@@ -12,7 +12,6 @@ acquisition_date,
 date_trunc(acquisition_date,month) as acquisition_month, --added by akash because string date was throwing error in tableau
 date_trunc(date,month) as order_month, --added by akash because string date was throwing error in tableau
 last_order_date,
-is_cancelled,
 brand_name,
 e.platform_name,
 e.store_name,
