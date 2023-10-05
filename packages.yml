@@ -6,4 +6,8 @@ packages:
   - '>=0.8.0'
   - <0.9.0
 - package: Saras-Daton/currency_exchange_rates
+<<<<<<< HEAD
   version: 1.0.2
+=======
+  version: 1.0.2
+>>>>>>> b2a0801fc6b504f698e952b9f9ca73e34711635e
