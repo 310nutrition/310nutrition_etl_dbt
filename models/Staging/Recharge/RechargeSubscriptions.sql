@@ -1,4 +1,4 @@
-{% if var('RechargeOnetimes') %}
+{% if var('RechargeSubscriptions') %}
     {{ config( enabled = True ) }}
 {% else %}
     {{ config( enabled = False ) }}

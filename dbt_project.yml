@@ -147,7 +147,7 @@ vars:
   SBSearchTermKeywordsVideoReport: True
   SBTargetReport:   False
   SBTargetVideoReport: False
-  SDProductTargetingReport: True
+  SDProductTargetingReport: False
   SDCampaign: True
   SDPortfolio: True
   SDProductAdsReport: True
