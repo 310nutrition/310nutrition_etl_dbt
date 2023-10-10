@@ -1,3 +1,9 @@
+{% if var('market_basket_analysis') %}
+{{ config( enabled = True ) }}
+{% else %}
+{{ config( enabled = False ) }}
+{% endif %}
+
 SELECT 
     distinct
     date, 

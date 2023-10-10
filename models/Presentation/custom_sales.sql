@@ -46,7 +46,7 @@ left join {{ref('dim_orders')}} f on a.order_key = f.order_key
 left join (select * from {{ref('dim_subscription')}} where effective_end_date = '9999-12-31') d
 on a.subscription_key = d.subscription_key
 left join {{ref('dim_brand')}} e on a.brand_key = e.brand_key
-left join (select product_key, product_id, product_name, sku,product_category,mrp,category,sub_category, cogs from {{ref('dim_product')}} where status = 'Active') i
+left join (select product_key, product_id, product_name, sku,product_category,mrp,category,sub_category, cogs,start_date,end_date from {{ref('dim_product')}} ) i
 on a.product_key = i.product_key
 ),
 
