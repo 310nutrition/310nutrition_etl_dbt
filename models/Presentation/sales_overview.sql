@@ -14,7 +14,7 @@ with orders as (
     sum(shipping_discount) shipping_discount,
     sum(total_tax) total_taxes
     from {{ ref('fact_orders') }}
-    where transaction_type = 'Order' and is_cancelled = false
+    where transaction_type = 'Order' 
     group by 1,2,3,4
 ),
 

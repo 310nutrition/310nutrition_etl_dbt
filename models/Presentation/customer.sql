@@ -1,3 +1,9 @@
+{% if var('customer') %}
+{{ config( enabled = True ) }}
+{% else %}
+{{ config( enabled = False ) }}
+{% endif %}
+
 select
 email,
 c.order_id,

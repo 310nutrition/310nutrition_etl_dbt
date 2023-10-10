@@ -84,6 +84,7 @@ vars:
   #Google Ads Table Flags
   GoogleAdsShoppingPerformanceView : True
   GoogleAdsCampaign : True
+  GoogleAdsAdReport : True
 
   #Facebook Tables Flags
   FacebookAdinsights: True
@@ -160,6 +161,13 @@ vars:
   SBUnifiedPlacementCampaignsReport: False
   SBUnifiedSearchTermKeywordsReport: False
   SBUnifiedTargetReport: False
+
+
+  #Presentation Tables 
+  customer : False
+  market_basket_analysis : False
+  sales_channel_analysis : False
+  sales_overview : False
 
   currency_conversion_flag: True
   ExchangeRates: True

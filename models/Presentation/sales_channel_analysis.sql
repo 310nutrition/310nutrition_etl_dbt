@@ -1,3 +1,9 @@
+{% if var('sales_channel_analysis') %}
+{{ config( enabled = True ) }}
+{% else %}
+{{ config( enabled = False ) }}
+{% endif %}
+
 select 
 brand_name,
 c.platform_name,
