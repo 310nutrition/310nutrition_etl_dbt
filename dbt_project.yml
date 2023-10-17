@@ -15,7 +15,8 @@ vars:
   raw_schema: "310nutrition_rawdata"
   raw_schema_ga: "analytics_357547543"
   mdl_database: "nutritiondatondw"
-  mdl_schema: "dbt_3nutrition_mdl_prerequisites"
+  mdl_schema: "{{ env_var('DBT_MDL_SCHEMA') }}" 
+    
 
   # Set the models to False in case you dont want them to be materialised
 

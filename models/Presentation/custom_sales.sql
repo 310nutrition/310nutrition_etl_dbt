@@ -40,7 +40,7 @@ last_order_date as customer_last_order_date,
 ship_city as delivery_city,
 ship_state as delivery_state,
 ship_country as delivery_country
-from {{ref('fact_order_lines')}} a left join `nutritiondatondw.dbt_3nutrition_mdl_main.dim_customer` b on a.customer_key=b.customer_key
+from {{ref('fact_order_lines')}} a left join {{ref('dim_customer')}} b on a.customer_key=b.customer_key
 left join {{ref('dim_platform')}} c on a.platform_key=c.platform_key
 left join {{ref('dim_orders')}} f on a.order_key = f.order_key
 left join (select * from {{ref('dim_subscription')}} where effective_end_date = '9999-12-31') d
