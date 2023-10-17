@@ -92,7 +92,7 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         CUSTOMER.currency_code as currency_code,
         CAMPAIGN.resource_name as campaign_resource_name,
         CAMPAIGN.name as campaign_name,
-        CAMPAIGN.id as campaign_id,
+        coalesce(CAMPAIGN.id,CAMPAIGN.id_nu) as campaign_id,
         CAMPAIGN.advertising_channel_type as campaign_advertising_channel_type,
         --CAMPAIGN.advertising_channel_sub_type as campaign_advertising_channel_sub_type,
         AD_GROUP.resource_name as ad_group_resource_name,
