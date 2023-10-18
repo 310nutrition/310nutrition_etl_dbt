@@ -8,4 +8,4 @@ case when dbt_valid_to is null then '9999-12-31' else cast(dbt_valid_to as date)
 dbt_updated_at as last_updated,
 '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as run_id,
 case when dbt_valid_to is null then 'Active' else 'Non-Active' end as status  
-from {{ ref('dim_product_snapshot') }} where product_id !='' and sku!= ''
+from {{ ref('dim_product_snapshot') }} where NOT (product_id = '' AND sku = '')
