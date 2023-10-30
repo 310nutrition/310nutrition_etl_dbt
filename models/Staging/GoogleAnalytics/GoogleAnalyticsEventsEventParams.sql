@@ -145,7 +145,7 @@ SELECT coalesce(MAX(event_timestamp) - 2592000000,0) FROM {{ this }}
         ecommerce.unique_items,	
         coalesce(ecommerce.transaction_id,'') transaction_id,
         {% endif %}	
-        items,
+        --items, commented by Akash due to a bug.
         current_timestamp() as _last_updated,
         '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id,
         ROW_NUMBER() OVER (
