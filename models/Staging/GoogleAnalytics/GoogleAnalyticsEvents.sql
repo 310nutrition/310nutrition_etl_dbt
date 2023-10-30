@@ -92,7 +92,7 @@ SELECT coalesce(MAX(event_timestamp) - 2592000000,0) FROM {{ this }}
         ecommerce.tax_value,
         ecommerce.unique_items,	
         coalesce(ecommerce.transaction_id,'') transaction_id,	
-        items,	
+        --items,	commented by Akash due to a bug.
         current_timestamp() as _last_updated,
         '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id,
         ROW_NUMBER() OVER (PARTITION BY event_timestamp, event_name, traffic_source.source, user_pseudo_id, ecommerce.transaction_id, device.category) row_num
