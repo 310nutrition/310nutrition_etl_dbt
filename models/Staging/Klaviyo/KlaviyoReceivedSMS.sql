@@ -1,4 +1,4 @@
-
+--replace(replace(left(datetime,19),"T"," "),"Z",":00") added instead of datetime because string column has invalid format at certain rows
 
 {% if is_incremental() %}
 {%- set max_loaded_query -%}
@@ -70,14 +70,14 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
         extra.message_id,
         extra.message_body,
         {% if var('timezone_conversion_flag') %}
-            datetime(DATETIME_ADD(timestamp(datetime), INTERVAL {{hr}} HOUR )) as datetime,
+            datetime(DATETIME_ADD(timestamp(replace(replace(left(datetime,19),"T"," "),"Z",":00")), INTERVAL {{hr}} HOUR )) as datetime,
         {% else %}
-            datetime(timestamp(datetime))  as datetime,
+            datetime(timestamp(replace(replace(left(datetime,19),"T"," "),"Z",":00")))  as datetime,
         {% endif %}
         {% if var('timezone_conversion_flag') %}
-            date(DATETIME_ADD(timestamp(datetime), INTERVAL {{hr}} HOUR )) as date,
+            date(DATETIME_ADD(timestamp(replace(replace(left(datetime,19),"T"," "),"Z",":00")), INTERVAL {{hr}} HOUR )) as date,
         {% else %}
-            date(timestamp(datetime))  as date,
+            date(timestamp(replace(replace(left(datetime,19),"T"," "),"Z",":00")))  as date,
         {% endif %}
         -- date(timestamp(datetime)) as datetime,
         -- date(datetime) as date,
@@ -87,9 +87,9 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
         _daton_batch_runtime,
         _daton_batch_id,
         {% if var('timezone_conversion_flag') %}
-           DATETIME_ADD(cast(datetime as timestamp), INTERVAL {{hr}} HOUR ) as _edm_eff_strt_ts,
+           DATETIME_ADD(cast(replace(replace(left(datetime,19),"T"," "),"Z",":00") as timestamp), INTERVAL {{hr}} HOUR ) as _edm_eff_strt_ts,
         {% else %}
-           CAST(datetime as timestamp) as _edm_eff_strt_ts,
+           CAST(replace(replace(left(datetime,19),"T"," "),"Z",":00") as timestamp) as _edm_eff_strt_ts,
         {% endif %}
         null as _edm_eff_end_ts,
         unix_micros(current_timestamp()) as _edm_runtime,
