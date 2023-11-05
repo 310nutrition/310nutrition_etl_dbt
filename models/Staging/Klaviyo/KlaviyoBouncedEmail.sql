@@ -70,7 +70,7 @@ SELECT coalesce(MAX(_daton_batch_runtime)-2592000000,0) FROM {{ this }}
         bounce_info.is_autoresponder,
         bounce_info.reason,
         bounce_info.type as bounce_delivery_type,
-        CAST({{ dbt.dateadd(datepart="hour", interval=hr, from_date_or_timestamp="cast(datetime as timestamp)") }} as {{ dbt.type_timestamp() }}) as datetime,
+        CAST({{ dbt.dateadd(datepart="hour", interval=hr, from_date_or_timestamp="replace(replace(left(datetime,19),'T',' '),'Z',':00')") }} as {{ dbt.type_timestamp() }}) as datetime,
         uuid,
         links.self,
         {{daton_user_id()}} as _daton_user_id,
