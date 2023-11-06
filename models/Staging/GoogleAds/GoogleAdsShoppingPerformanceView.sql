@@ -116,7 +116,7 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         {% if target.type =='snowflake' %}
             Dense_Rank() OVER (PARTITION BY CUSTOMER.VALUE:resource_name, SEGMENTS.VALUE:date, AD_GROUP.VALUE:id, CAMPAIGN.VALUE:id, SEGMENTS.VALUE:product_item_id, SEGMENTS.VALUE:product_title order by {{daton_batch_runtime()}} desc) row_num
         {% else %}
-            Dense_Rank() OVER (PARTITION BY CUSTOMER.resource_name, SEGMENTS.date, AD_GROUP.id,CAMPAIGN.id,SEGMENTS.product_item_id,SEGMENTS.product_title order by {{daton_batch_runtime()}} desc) row_num
+            Dense_Rank() OVER (PARTITION BY CUSTOMER.resource_name, SEGMENTS.date, AD_GROUP.id,CAMPAIGN.id,SEGMENTS.product_item_id order by {{daton_batch_runtime()}} desc) row_num
         {% endif %}
 	    from {{i}} 
             {{unnesting("CUSTOMER")}}
