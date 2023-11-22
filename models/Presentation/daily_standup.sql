@@ -6,10 +6,12 @@ with cte1 as (
     select
     date,
     case
-        when lower(sessionDefaultChannelGroup) like "%paid%" then "Paid Traffic"
-        when lower(sessionDefaultChannelGroup) in ("sms","email") then "Paid Traffic"
-        when lower(sessionDefaultChannelGroup) = "unassigned" then "Unattributed Traffic"
-        else "Organic Traffic" end as traffic_source,
+        when lower(sessionDefaultChannelGroup) like "%organic%" then "Organic Traffic"
+        when lower(sessionDefaultChannelGroup) like "%direct%" then "Organic Traffic"
+        when lower(sessionDefaultChannelGroup) like "%unassigned%" then "Organic Traffic"
+        --when lower(sessionDefaultChannelGroup) in ("sms","email") then "Paid Traffic"
+        --when lower(sessionDefaultChannelGroup) = "unassigned" then "Unattributed Traffic"
+        else "Paid Traffic" end as traffic_source,
     totalusers,
     sessions, 
     round(sessions*sessionConversionRate,0) converted_sessions
@@ -22,8 +24,8 @@ cte2 as (select
         when traffic_source = "Paid Traffic" then sum(totalusers) end as Paid_Traffic,
     case
         when traffic_source = "Organic Traffic" then sum(totalusers) end as Organic_Traffic,
-    case
-        when traffic_source = "Unattributed Traffic" then sum(totalusers) end as Unattributed_Traffic,
+    --case
+      --  when traffic_source = "Unattributed Traffic" then sum(totalusers) end as Unattributed_Traffic,
     sum(totalusers) as totalusers,
     sum(sessions) as  sessions,
     sum(converted_sessions) as converted_sessions
@@ -34,7 +36,7 @@ traffic as (select
   date,
   sum(paid_traffic) as paid_traffic,
   sum(organic_traffic) as organic_traffic,
-  sum(unattributed_traffic) as unattributed_traffic,
+  --sum(unattributed_traffic) as unattributed_traffic,
   sum(totalusers) as total_traffic,
   sum(sessions) as total_sessions,
   sum(converted_sessions) as converted_sessions
@@ -147,7 +149,7 @@ select
     a.date,
     COALESCE(paid_traffic, 0) AS paid_traffic,
     COALESCE(organic_traffic, 0) AS organic_traffic,
-    COALESCE(unattributed_traffic, 0) AS unattributed_traffic,
+    --COALESCE(unattributed_traffic, 0) AS unattributed_traffic,
     COALESCE(total_traffic, 0) AS total_traffic,
     COALESCE(total_sessions, 0) AS total_sessions,
     COALESCE(converted_sessions, 0) AS converted_sessions,
