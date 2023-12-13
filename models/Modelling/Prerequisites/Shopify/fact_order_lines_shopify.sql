@@ -67,8 +67,9 @@ currency,
 exchange_currency_code,
 exchange_currency_rate,
 date(created_at) as date,
+if(lower(ord.tags) like ("%subscription%"),"Subscription",null) as subscription_id,
 {% if var('recharge_flag') %}
-  recharge.subscription_id,
+  --recharge.subscription_id,
 {% elif var('upscribe_flag') %}
   upscribe.subscription_id,
 {% else %}
@@ -98,10 +99,10 @@ sum(line_items_quantity) quantity,
 sum(CAST(line_items_price AS numeric)*line_items_quantity + ifnull(CAST(tax_lines_price AS numeric),0)) total_price,
 sum(CAST(line_items_price AS numeric)*line_items_quantity) subtotal_price,
 order_total_tax/COUNT(*) OVER (PARTITION BY ord.order_id) as total_tax,
-case when order_level.order_price = 0 THEN 0 else order_level.order_shipping_price * (sum(CAST(line_items_price AS numeric)*line_items_quantity + ifnull(CAST(tax_lines_price AS numeric),0))/order_level.order_price) end as shipping_price,
+order_level.order_shipping_price / COUNT(*) OVER (PARTITION BY ord.order_id) as shipping_price,
 cast(null as numeric) as giftwrap_price, 
-case when order_level.order_price = 0 THEN 0 else order_level.order_discount * (sum(CAST(line_items_price AS numeric)*line_items_quantity + ifnull(CAST(tax_lines_price AS numeric),0))/order_level.order_price) end as item_discount,
-case when order_level.order_price = 0 THEN 0 else order_level.shipping_discount * (sum(CAST(line_items_price AS numeric)*line_items_quantity + ifnull(CAST(tax_lines_price AS numeric),0))/order_level.order_price) end as shipping_discount
+order_level.order_discount / COUNT(*) OVER (PARTITION BY ord.order_id) as item_discount,
+order_level.shipping_discount /  COUNT(*) OVER (PARTITION BY ord.order_id) as shipping_discount,
 from {{ ref('ShopifyOrdersLineItems') }} ord
 left join order_level on ord.order_id = order_level.order_id and ord.brand = order_level.brand 
 --left join (select order_id, line_items_product_id, line_items_sku, sum(presentment_money_amount) as presentment_money_amount from {{ ref('ShopifyOrdersDiscountAllocations') }} group by 1,2,3) disc_alloc
@@ -114,12 +115,14 @@ on ord.order_id = info.order_id
   left join (
   select distinct 'Recharge' as order_channel, 
   external_order_id as order_id, 
-  sku, 
+  sku,
+  line_items_title, 
+  variant_title,
   case when purchase_item_type='subscription' then cast(purchase_item_id as string)
   end as subscription_id
   from {{ ref('RechargeOrdersLineItemsProperties') }}) recharge
-  on ord.order_id = recharge.order_id and ord.line_items_sku = recharge.sku
-{% endif %}
+  on ord.order_id = recharge.order_id and (ord.line_items_sku = recharge.sku or ( ord.line_items_title = recharge.line_items_title and ord.line_items_variant_title = recharge.variant_title))
+  {% endif %}
 
 -- fetching the subscription ids in case of upscribe orders
 {% if var('upscribe_flag') %}
@@ -138,7 +141,7 @@ on ord.order_id= tax.order_id and ord.line_items_sku = tax.line_items_sku and or
 -- left join (select order_id,discount_applications_code,discount_applications_title,discount_applications_description, row_number() over(partition by order_id order by _daton_batch_runtime) as index from {{ref('ShopifyOrdersDiscountApplications')}}) f
 -- on a.order_id=f.order_id and a.discount_application_index = f.index
 
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,order_shipping_price,order_price,order_discount,order_level.shipping_discount,order_level.order_total_tax
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,order_shipping_price,order_price,order_discount,order_level.shipping_discount,order_level.order_total_tax,ord.tags
 
 UNION ALL
 
@@ -182,12 +185,12 @@ billing_address_country as bill_country,
 billing_address_zip as bill_postal_code,
 sum(line_item_quantity) as quantity,
 (total_transaction_amt / COUNT(*) OVER (PARTITION BY ref.order_id) + ifnull(CAST(refund_line_items_total_tax AS numeric),0)) total_price,
-total_transaction_amt / COUNT(*) OVER (PARTITION BY ref.order_id) subtotal_price,
+sum(CAST(refund_line_items_subtotal AS numeric)) subtotal_price,
 sum(cast(refund_line_items_total_tax as numeric)) total_tax,
 cast(null as numeric) as shipping_price, 
 cast(null as numeric) as giftwrap_price, 
 cast('' as numeric) as item_discount,
-cast(null as numeric) as shipping_discount
+cast(null as numeric) as shipping_discount,
 from {{ ref('ShopifyRefundsLineItems')}} ref
 left join (select t.order_id, sum(cast(transactions_amount as numeric)) as total_transaction_amt from `nutritiondatondw.dbt_3nutrition_stg_shopify.ShopifyRefundsTransactions` t group by 1 ) r on ref.order_id = r.order_id 
 --left join (select order_id, line_items_product_id, line_items_sku, sum(presentment_money_amount) as presentment_money_amount from {{ ref('ShopifyOrdersDiscountAllocations') }} group by 1,2,3) disc_alloc
@@ -243,6 +246,52 @@ on cast(ref.order_id as string) = info.order_id
 
 where created_at is not null
 group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,total_transaction_amt,ref.order_id,refund_line_items_total_tax
+
+union all
+
+select
+cast(order_adjustments_order_id as string) as order_id,
+adj.brand,
+'Shopify' as platform_name,
+{{store_name('store')}},
+cast(null as string) as product_id, 
+cast(null as string) as sku,
+amount_set_presentment_money_currency_code as currency,
+exchange_currency_code,
+exchange_currency_rate,
+date(created_at) as date,
+cast(null as string) as subscription_id,
+'Adjustment' as transaction_type, 
+cast(null as string) order_channel,
+'' as reason,
+cast(null as string) customer_id,
+cast(null as string)as ship_address_type,
+cast(null as string) as ship_address_1,
+cast(null as string)as ship_address_2,
+cast(null as string)as ship_city,
+cast(null as string) as ship_district,
+cast(null as string) as ship_state,
+cast(null as string) as ship_country,
+cast(null as string)as ship_postal_code,
+cast(null as string) as bill_address_type,
+cast(null as string) as bill_address_1,
+cast(null as string)as bill_address_2,
+cast(null as string) as bill_city,
+cast(null as string) as bill_district,
+cast(null as string) as bill_state,
+cast(null as string) as bill_country,
+cast(null as string) as bill_postal_code,
+cast(null as numeric) quantity,
+sum(cast(order_adjustments_amount as numeric)) as total_price,
+sum(cast(order_adjustments_amount as numeric)) as subtotal_price,
+cast(null as numeric) as total_tax,
+cast(null as numeric)as shipping_price,
+cast(null as numeric) as giftwrap_price, 
+cast(null as numeric) as item_discount,
+cast(null as numeric)as shipping_discount,
+from {{ ref('ShopifyRefundsOrderAdjustments') }} adj
+group by 1,2,3,4,7,8,9,10,12
 ) base 
 left join (select order_id, cast(line_items_product_id as string) as product_id , line_items_sku as sku, sum(presentment_money_amount) as item_discount from {{ ref('ShopifyOrdersDiscountAllocations') }} group by 1,2,3) disc_alloc
 on cast(base.order_id as string) = disc_alloc.order_id and cast(base.sku as string) = disc_alloc.sku and base.product_id = disc_alloc.product_id
+
