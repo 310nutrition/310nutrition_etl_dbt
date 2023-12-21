@@ -1,3 +1,9 @@
+{% if var('calender') %}
+{{ config( enabled = True ) }}
+{% else %}
+{{ config( enabled = False ) }}
+{% endif %}
+
 select Date,
 extract(month from Date) Month,
 extract(isoweek from Date) week,

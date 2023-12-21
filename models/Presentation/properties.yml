@@ -320,18 +320,18 @@ models:
     config:
       materialized: incremental
       incremental_strategy: merge
-      unique_key: ['date','brand_name','campaign_type','platform_name','store_name','product_id','sku','campaign_id']
+      unique_key: ['date','brand_name','campaign_type','platform_name','store_name','product_id','sku','campaign_id','ad_id','ad_name','adgroup_id','adgroup_name']
       partition_by: { 'field': 'date', 'data_type': 'date' }
-      cluster_by: ['date','brand_name','ad_channel','product_id'] 
+      cluster_by: ['date','ad_channel','product_id','campaign_type']
 
 
   - name: marketing_overview
     config:
       materialized: incremental
       incremental_strategy: merge
-      unique_key: ['date','brand_name','ad_channel','platform_name','store_name','portfolio_name']
+      unique_key: ['date','brand_name','ad_channel','platform_name','store_name','portfolio_name','campaign_name']
       partition_by: { 'field': 'date', 'data_type': 'date' }
-      cluster_by: ['date','brand_name','ad_channel'] 
+      cluster_by: ['date','ad_channel','portfolio_name','campaign_name'] 
    
 
   - name: product_insights
@@ -483,7 +483,7 @@ models:
       incremental_strategy: merge
       unique_key: ['brand_name','platform_name','store_name','product_id','sku','order_id']
       partition_by: { 'field': 'date', 'data_type': 'date' }
-      cluster_by: ['date','brand_name'] 
+      cluster_by: ['date','platform_name','product_id','sku'] 
 
   - name: sales_deepdive
     config:
@@ -491,7 +491,7 @@ models:
       incremental_strategy: merge
       unique_key: ['date','brand_name','platform_name','store_name','product_id','sku']
       partition_by: { 'field': 'date', 'data_type': 'date' }
-      cluster_by: ['date','brand_name'] 
+      cluster_by: ['date','platform_name','product_id','sku'] 
     columns:
       - name: brand_name
         tests:
@@ -596,7 +596,7 @@ models:
     config:
       materialized: incremental
       incremental_strategy: merge
-      unique_key: ['created_at','brand_name','platform_name','store_name','sku','subscription_id']
+      unique_key: ['created_at','brand_name','platform_name','store_name','sku','subscription_id','cancelled_at','cancellation_reason','next_charge_scheduled_at','order_interval_frequency']
       partition_by: { 'field': 'created_at', 'data_type': 'date' }
       cluster_by: ['created_at','brand_name'] 
     columns:

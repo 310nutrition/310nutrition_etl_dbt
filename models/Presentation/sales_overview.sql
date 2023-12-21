@@ -1,3 +1,9 @@
+{% if var('sales_overview') %}
+{{ config( enabled = True ) }}
+{% else %}
+{{ config( enabled = False ) }}
+{% endif %}
+
 with orders as (
     select 
     brand_key,

@@ -1581,3 +1581,11 @@ models:
           combination_of_columns:
             - id
 
+  - name: ShopifyRefundsOrderAdjustments
+    description: A list of refunded orders which includes order adjustments amount at order level.
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['refund_id','order_adjustments_id']
+      partition_by: { 'field': 'created_at', 'data_type': 'timestamp', 'granularity': 'day' }
+      cluster_by: ['refund_id']

@@ -121,7 +121,7 @@ models:
     config:
       materialized : incremental
       incremental_strategy: merge
-      unique_key : ['id','_attributed_event_id']
+      unique_key : ['id','attributed_event_id']
       partition_by: { 'field': 'datetime', 'data_type': 'timestamp', 'granularity': 'day' }
 
   - name: KlaviyoRecievedPush

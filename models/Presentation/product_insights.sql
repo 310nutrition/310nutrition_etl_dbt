@@ -1,3 +1,10 @@
+{% if var('product_insights') %}
+{{ config( enabled = True ) }}
+{% else %}
+{{ config( enabled = False ) }}
+{% endif %}
+
+
 with sales as (
     select 
     brand_key,
