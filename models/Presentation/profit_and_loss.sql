@@ -1,3 +1,9 @@
+{% if var('profit_and_loss') %}
+{{ config( enabled = True ) }}
+{% else %}
+{{ config( enabled = False ) }}
+{% endif %}
+
 
 select 
 brand_name,
