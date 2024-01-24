@@ -1,6 +1,6 @@
 -- Dependencies generated through pipeline script.
 -- depends_on: {{ ref('fact_traffic_amazonseller') }}
--- depends_on: {{ ref('fact_traffic_googleanalytics') }}
+
 
 {% if is_incremental() %}
 {%- set max_loaded_query -%}
