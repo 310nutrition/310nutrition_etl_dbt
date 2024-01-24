@@ -1,5 +1,4 @@
 -- Dependencies generated through pipeline script.
--- depends_on: {{ ref('dim_event_googleanalytics') }}
 
 {% if is_incremental() %}
 {%- set max_loaded_query -%}
