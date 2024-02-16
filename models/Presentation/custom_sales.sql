@@ -55,7 +55,8 @@ FROM {{ref('marketing_deepdive')}}
 group by 1,2,3,4), --added by akash
 
 cte2 as (select a.*, coalesce(b.adspend/count(*) over(partition by a.brand_name, a.platform_name ,a.store_name, a.date),0) as adspend, 
-    if(a.date >="2023-01-01" and a.platform_name = 'Shopify',coalesce(c.order_type,"Recurring Order"),"Unknown") as order_source
+    if(a.date >="2023-01-01" and a.platform_name = 'Shopify',
+    coalesce(c.order_type,if(customer_order_sequence=1,"Unattributed","Recurring Order")),"Unattributed") as order_source
 from custom_sales as a
 left join marketing as b
 on a.brand_name = b.brand_name and a.platform_name = b.platform_name and a.store_name = b.store_name and a.date = b.date and lower(a.order_type)='order'
@@ -68,4 +69,4 @@ cte3 as (select distinct customer_id, order_source
 from cte2
 where platform_name = 'Shopify' and customer_order_sequence = 1 and customer_id is not null)
 
-select cte2.*, coalesce(cte3.order_source,"Unknown") as customer_source from cte2 left join cte3 on cte2.customer_id = cte3.customer_id
+select cte2.*, coalesce(cte3.order_source,"Unattributed") as customer_source from cte2 left join cte3 on cte2.customer_id = cte3.customer_id
