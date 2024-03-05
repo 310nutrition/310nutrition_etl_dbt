@@ -10,10 +10,10 @@ a.transaction_type as order_type,
 a.product_id,
 a.sku,
 i.product_name,
-product_category,
+--product_category,
 mrp,
 category,
-sub_category, 
+--sub_category, 
 cogs,
 quantity,
 currency_code as currency,
@@ -26,16 +26,23 @@ case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item
 case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item_giftwrap_price else 0 end as item_giftwrap,
 case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item_discount else 0 end as item_discount,
 case when a.transaction_type='Return' then item_subtotal_price else 0 end AS item_refund_amount,
+<<<<<<< HEAD
 case when d.subscription_id is not null then True ELSE False end as is_subscription,
 d.subscription_id as subscription_id,
 d.external_product_id as subscription_product_id,
 d.customer_id as subscription_customer_id,
+=======
+case when coalesce(a.subscription_id,d.subscription_id) is not null then True ELSE False end as is_subscription,
+coalesce(a.subscription_id,d.subscription_id) as subscription_id,
+--d.external_product_id as subscription_product_id,
+--d.customer_id as subscription_customer_id,
+>>>>>>> c804bb7a4adf8841a63d13a3391eacecdd68b2dc
 CASE WHEN a.customer_id is null then 1 else DENSE_RANK() OVER (PARTITION BY a.customer_id ORDER BY a.date, a.order_id) end AS customer_order_sequence,
 acquisition_date as customer_first_order_date,
 last_order_date as customer_last_order_date,
-ship_city as delivery_city,
-ship_state as delivery_state,
-ship_country as delivery_country
+--ship_city as delivery_city,
+--ship_state as delivery_state,
+--ship_country as delivery_country
 from {{ref('fact_order_lines')}} a left join {{ref('dim_customer')}} b on a.customer_key=b.customer_key
 left join {{ref('dim_platform')}} c on a.platform_key=c.platform_key
 left join {{ref('dim_orders')}} f on a.order_key = f.order_key
@@ -46,17 +53,27 @@ left join (select product_key, product_id, product_name, sku,product_category,mr
 on a.product_key = i.product_key
 ),
 
-sales as (select * 
-from custom_sales 
-where lower(order_type) = 'order'), --added by akash
+-- sales as (select * 
+-- from custom_sales 
+-- where lower(order_type) = 'order'), --added by akash
 
 marketing as (SELECT brand_name, platform_name ,store_name, date, sum(adspend) as adspend 
 FROM {{ref('marketing_deepdive')}}
-group by 1,2,3,4) --added by akash
+group by 1,2,3,4), --added by akash
 
-select a.*, coalesce(b.adspend/count(*) over(partition by a.brand_name, a.platform_name ,a.store_name, a.date),0) as adspend
-from sales as a
+cte2 as (select a.*, coalesce(b.adspend/count(*) over(partition by a.brand_name, a.platform_name ,a.store_name, a.date),0) as adspend, 
+    if(a.date >="2023-01-01" and a.platform_name = 'Shopify',
+    coalesce(c.order_type,if(customer_order_sequence=1,"Unattributed","Recurring Order")),"Unattributed") as order_source
+from custom_sales as a
 left join marketing as b
-on a.brand_name = b.brand_name and a.platform_name = b.platform_name and a.store_name = b.store_name and a.date = b.date
-union all
-select *, 0 as adspend from custom_sales where lower(order_type) != 'order'--added by Akash
+on a.brand_name = b.brand_name and a.platform_name = b.platform_name and a.store_name = b.store_name and a.date = b.date and lower(a.order_type)='order'
+left join {{ref('ShopifyOrdersClassification')}} c
+on a.order_id = c.order_id),
+-- union all
+-- select *, 0 as adspend from custom_sales where lower(order_type) != 'order'--added by Akash
+
+cte3 as (select distinct customer_id, order_source
+from cte2
+where platform_name = 'Shopify' and customer_order_sequence = 1 and customer_id is not null)
+
+select cte2.*, coalesce(cte3.order_source,"Unattributed") as customer_source from cte2 left join cte3 on cte2.customer_id = cte3.customer_id
