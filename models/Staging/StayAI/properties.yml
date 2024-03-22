@@ -1,0 +1,20 @@
+version: 2
+models:
+
+  - name: StayAIOrdersLineItems
+    description: A list of orders.
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['order_id']
+      partition_by: { 'field': 'createdat', 'data_type': 'timestamp', 'granularity': 'day' }
+      cluster_by: ['order_id']
+
+  - name: StayAISubscriptions
+    description: A list of subscriptions.
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['subscription_id']
+      partition_by: { 'field': 'createdat', 'data_type': 'timestamp', 'granularity': 'day' }
+      cluster_by: ['subscription_id']
