@@ -26,17 +26,14 @@ case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item
 case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item_giftwrap_price else 0 end as item_giftwrap,
 case when a.transaction_type='Order' or a.transaction_type='Cancelled' then item_discount else 0 end as item_discount,
 case when a.transaction_type='Return' then item_subtotal_price else 0 end AS item_refund_amount,
-<<<<<<< HEAD
 case when d.subscription_id is not null then True ELSE False end as is_subscription,
 d.subscription_id as subscription_id,
 d.external_product_id as subscription_product_id,
 d.customer_id as subscription_customer_id,
-=======
 case when coalesce(a.subscription_id,d.subscription_id) is not null then True ELSE False end as is_subscription,
 coalesce(a.subscription_id,d.subscription_id) as subscription_id,
 --d.external_product_id as subscription_product_id,
 --d.customer_id as subscription_customer_id,
->>>>>>> c804bb7a4adf8841a63d13a3391eacecdd68b2dc
 CASE WHEN a.customer_id is null then 1 else DENSE_RANK() OVER (PARTITION BY a.customer_id ORDER BY a.date, a.order_id) end AS customer_order_sequence,
 acquisition_date as customer_first_order_date,
 last_order_date as customer_last_order_date,
